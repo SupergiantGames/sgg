@@ -1,0 +1,59 @@
+{# ------------------------------------------------------- #}
+{# INDIVIDUAL VIEW FOR EACH authors #}
+{# This page can use any data from http:localhost:2000/cms/#/form/authors/ #}
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+{# ------------------------------------------------------- #}
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+{# This sets our page <title>. It will append this authors's name to the site title defined in base.html #}
+{% block title %}{% parent %} - {{ item.name }}{% endblock %}
+{% block content %}
+  <p><a href="/authors/">View a list of all authors</a></p>
+  <h1>{{ item.name }}</h1>
+  <ul>
+      <li>
+        <strong>Name: </strong>
+        {{ item.name }}
+      </li>
+      <li>
+        <strong>Create Date: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.create_date|date('F d Y') }}
+      </li>
+      <li>
+        <strong>Last Updated: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.last_updated|date('F d Y') }}
+      </li>
+      <li>
+        <strong>Publish Date: </strong>
+        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
+        {{ item.publish_date|date('F d Y') }}
+      </li>
+      <li>
+        <strong>Full name: </strong>
+        {{ item.full_name.first }} {{ item.full_name.last }}
+      </li>
+      <li>
+        <strong>Email: </strong>
+        {{ item.email }}
+      </li>
+      <li>
+        <strong>Blogs: </strong>
+        {# Relations require some special code. More info about relations here: #}
+        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
+        {% for relation in getItems(item.blogs) %}
+          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
+        {% endfor %}
+      </li>
+      <li>
+        <strong>Preview URL: </strong>
+        {{ item.preview_url }}
+      </li>
+  </ul>
+{% endblock %}
