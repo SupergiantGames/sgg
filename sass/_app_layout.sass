@@ -34,6 +34,13 @@
     img
       float: right
       margin: 0 0 $base-line-height $base-line-height
+  .updates
+    padding: $gutter
+    ul
+      @extend %wy-plain-list-disc
+      margin-bottom: 0
+  hr
+    border-color: rgba(0,0,0,.1)
   .excerpt
     font-size: 150%
     line-height: 1.2
@@ -57,13 +64,18 @@
     margin-bottom: $base-line-height
 .media
   padding: $gutter * 2 $gutter * 2 $gutter $gutter * 2
-  background: rgba(0,0,0,.1)
+  background: url(http://subtlepatterns.com/patterns/dark_geometric.png)
   ul
     +outer-container
   li
     +span-columns(3)
     +omega(4n)
     margin-bottom: $gutter
+    border: solid 1px transparent
+    box-shadow: 0 0 5px rgba(0,0,0,.8)
+  li:hover
+    box-shadow: 0 0 5px rgba(0,0,0,.8)
+    border-color: $orange
   li .media-video
     width: 100%
     padding-top: 56.25%

@@ -28,8 +28,19 @@
     <div class="container">
       {% set reviews = getItems(item.reviews) %}
       <div class="half game-info-reviews">
+        <div class="updates">
+          <h2>Latest updates</h2>
+          {% set blog = getItems(item.blog) %}
+          {% set blog = blog|sort('publish_date', true)%}
+          <ul>
+            {% for post in blog %}
+              <li><a href="{{ url(post) }}">{{ post.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+        <hr>
         {% for review in reviews %}
-          <img src="{{ review.publication_logo|imageSize(200) }}" />
+          <img src="{{ review.publication_logo|imageSize(100) }}" />
           <span class="excerpt">{{ review.excerpt }}</span>
           <a href="{{ review.url }}" class="score">{{ review.score }} {{ review.rating_style }}</a>
         {% endfor %}
@@ -37,7 +48,7 @@
       <div class="half game-info-text">
         <img src="{{ item.box_art|imageSize(200) }}">
         {{ item.about|safe }}
-        <p>Available on
+        <p>Available now on
         {% for platform in item.platforms %}
           {% if platform.value %}
             {{ platform.label }}
@@ -70,7 +81,8 @@
       <div class="store-album">
         {{ item.soundtrack.html|safe }}
       </div>
-      <div class="store-text"></div>
+      <div class="store-text">
+      </div>
     </div>
   </div>
 
