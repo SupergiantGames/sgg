@@ -37,6 +37,11 @@
       <div class="half game-info-text">
         <img src="{{ item.box_art|imageSize(200) }}">
         {{ item.about|safe }}
+        {% for platform in item.platforms %}
+          {% if platform.value %}
+            {{ platform.label }}
+          {% endif %}
+        {% endfor%}
         <a href="{{ item.steam }}" class="btn btn-invert fa fa-steam-square"> Buy it on Steam</a>
         <a href="{{ item.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Buy it on Amazon</a>
       </div>
