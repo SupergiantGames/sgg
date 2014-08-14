@@ -32,8 +32,22 @@ module.exports.swigFunctions = function(swig) {
    * @returns {String}   Url for the object passed in
    */
   var url = function(object) {
+    if(typeof object === 'string') {
+      object = { slug: object, name: object };
+    }
+
     var slug = object.slug ? object.slug : (object.name ? slugger(object.name).toLowerCase() : null);
     var prefix = object._type ? object._type : '';
+
+    if(object._type) {
+      if(self.typeInfo[object._type].customUrls &&  self.typeInfo[object._type].customUrls.individualUrl) {
+        prefix = utils.parseCustomUrl(self.typeInfo[object._type].customUrls.individualUrl, object);
+      }
+    } else {
+      if(self.typeInfo[object.slug].customUrls && self.typeInfo[object.slug].customUrls.listUrl) {
+        slug = self.typeInfo[object.slug].customUrls.listUrl;
+      }
+    }
 
     var url = '';
     if(prefix) {
