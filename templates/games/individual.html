@@ -37,34 +37,43 @@
       <div class="half game-info-text">
         <img src="{{ item.box_art|imageSize(200) }}">
         {{ item.about|safe }}
+        <p>Available on
         {% for platform in item.platforms %}
           {% if platform.value %}
             {{ platform.label }}
           {% endif %}
         {% endfor%}
+        </p>
         <a href="{{ item.steam }}" class="btn btn-invert fa fa-steam-square"> Buy it on Steam</a>
         <a href="{{ item.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Buy it on Amazon</a>
       </div>
     </div>
   </div>
 
-  <div class="store">
-    <div class="container">
-      <div class="store-album">
-        <iframe style="border: 0; width: 300px; height: 300px;" src="https://bandcamp.com/EmbeddedPlayer/album=1027921798/size=large/bgcol=ffffff/linkcol=de270f/minimal=true/transparent=true/" seamless></iframe>
-      </div>
-      <div class="store-text"></div>
-    </div>
-  </div>
-
   <div class="media">
     {% set gallery = getItem(item.gallery) %}
+    {% set videos = getItems(item.video) %}
     <ul>
+      {% for video in videos %}
+        <li>
+        <a href="{{ video.video.url }}" class="media-video fa fa-youtube-play" style="background-image: url({{ video.video.thumbnail_url|imageSize(300) }})"> <span class="media-video-name">{{ video.name }}</span></a>
+        </li>
+      {% endfor %}
       {% for image in gallery.gallery %}
         <li><a href="{{ image.url }}"><img src="{{ image|imageSize(300) }}"></a></li>
       {% endfor %}
     </ul>
   </div>
+
+  <div class="store">
+    <div class="container">
+      <div class="store-album">
+        {{ item.soundtrack.html|safe }}
+      </div>
+      <div class="store-text"></div>
+    </div>
+  </div>
+
 
 
 
