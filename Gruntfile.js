@@ -33,6 +33,12 @@ module.exports = function(grunt) {
       }
     },
     copy: {
+      // Import Parallax
+      parallax: {
+        files: [
+          {expand: true, src: ['bower_components/parallax/deploy/*'], dest: 'static/javascript/parallax/', flatten: true, filter: 'isFile'}
+        ]
+      },
       // Import Fontawesome fonts
       fontawesome: {
         files: [

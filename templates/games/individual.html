@@ -12,6 +12,59 @@
 {# This sets our page <title>. It will append this games's name to the site title defined in base.html #}
 {% block title %}{% parent %} - {{ item.name }}{% endblock %}
 {% block content %}
+
+
+  <div class="title">
+    {% include "templates/partials/header.html" %}
+
+    <ul id="scene">
+      <li class="layer" data-depth="0.40"><img src="/static/images/{{ item.name }}/title_02.png"></li>
+      <li class="layer" data-depth="1"><img src="/static/images/{{ item.name }}/title_03.png"></li>
+      <li class="layer" data-depth="0.20"><img src="/static/images/{{ item.name }}/title_04.png"></li>
+    </ul>
+  </div>
+
+  <div class="game-info">
+    <div class="container">
+      {% set reviews = getItems(item.reviews) %}
+      <div class="half game-info-reviews">
+        {% for review in reviews %}
+          <img src="{{ review.publication_logo|imageSize(200) }}" />
+          <span class="excerpt">{{ review.excerpt }}</span>
+          <a href="{{ review.url }}" class="score">{{ review.score }} {{ review.rating_style }}</a>
+        {% endfor %}
+      </div>
+      <div class="half game-info-text">
+        <img src="{{ item.box_art|imageSize(200) }}">
+        {{ item.about|safe }}
+        <a href="{{ item.steam }}" class="btn btn-invert fa fa-steam-square"> Buy it on Steam</a>
+        <a href="{{ item.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Buy it on Amazon</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="store">
+    <div class="container">
+      <div class="store-album">
+        <iframe style="border: 0; width: 300px; height: 300px;" src="https://bandcamp.com/EmbeddedPlayer/album=1027921798/size=large/bgcol=ffffff/linkcol=de270f/minimal=true/transparent=true/" seamless></iframe>
+      </div>
+      <div class="store-text"></div>
+    </div>
+  </div>
+
+  <div class="media">
+    {% set gallery = getItem(item.gallery) %}
+    <ul>
+      {% for image in gallery.gallery %}
+        <li><a href="{{ image.url }}"><img src="{{ image|imageSize(300) }}"></a></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+
+
+
+
   <p><a href="/games/">View a list of all games</a></p>
   <h1>{{ item.name }}</h1>
   <ul>
@@ -78,6 +131,14 @@
         <strong>Original release date: </strong>
         {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
         {{ item.original_release_date|date('F d Y') }}
+      </li>
+      <li>
+        <strong>Gallery: </strong>
+        {# Relations require some special code. More info about relations here: #}
+        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
+        {% set relation = getItem(item.gallery) %}
+        {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
+        <a href="{{ url(relation) }}">{{ relation.name }}</a>
       </li>
   </ul>
 {% endblock %}

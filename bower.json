@@ -16,7 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "fluidbox": "~1.3.2",
+    "fluidbox": "~1.3.3",
     "google-code-prettify": "~1.0.1",
     "highlight": "~7.0.1",
     "webhook-js": "*",

@@ -1,0 +1,133 @@
+.title
+  background: url(/static/images/transistor/title_01.jpg)
+  background-size: cover
+  overflow: hidden
+#scene
+  z-index: 3
+  position: relative
+  bottom: -20px
+  li
+    z-index: 3
+  li.bg
+    width: 100%
+    z-index: 1
+    img
+      width: 100%
+.container
+  +outer-container
+  .half
+    +span-columns(6)
+    +omega(2n)
+
+
+
+.store
+  background: #3A7665
+  padding: $gutter * 2
+.game-info
+  padding: $gutter * 2
+  p:last-child
+    margin-bottom: 0
+  .game-info-text
+    background: #D9D3CD
+    padding: $gutter
+    img
+      float: right
+      margin: 0 0 $base-line-height $base-line-height
+  .excerpt
+    font-size: 150%
+    line-height: 1.2
+    font-family: $custom-font-family
+    position: relative
+    display: block
+    font-style: italic
+    padding-right: $gutter
+    &:before
+      content: '"'
+      position: absolute
+      left: -20px
+    &:after
+      content: '"'
+      position: absolute
+      right: 20px
+      bottom: 0
+  img
+    display: block
+    margin: auto
+    margin-bottom: $base-line-height
+.media
+  padding: $gutter * 2 $gutter * 2 $gutter $gutter * 2
+  background: rgba(0,0,0,.1)
+  ul
+    +outer-container
+  li
+    +span-columns(3)
+    +omega(4n)
+    margin-bottom: $gutter
+  img
+    width: 100%
+
+
+nav
+  background: $background-color
+  z-index: 2
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  height: 120px
+  .container
+    position: relative
+  ul
+    display: inline-block
+    float: right
+    background: rgba(0,0,0,.1)
+    padding: 0 $base-line-height / 2
+    height: 60px
+    z-index: 20
+  ul li
+    display: inline-block
+  ul li a
+    display: inline-block
+    padding: 0 $base-line-height / 2
+    line-height: 60px
+    color: $gray
+    text-transform: uppercase
+    font-size: 80%
+    &.fa
+      padding: $base-line-height / 2 $base-line-height / 4
+      color: #CA0000 !important
+    &.active
+      color: #CA0000
+      font-weight: bold
+    &:visited
+      color: $gray
+    &:hover
+      color: #CA0000
+  .logo
+    display: inline-block
+    position: absolute
+    padding: $base-line-height / 2
+    img
+      display: inline-block
+      z-index: 6
+.game-bg
+  width: 100%
+  height: 500px
+  background-size: cover
+  background-image: url(/static/images/transistor/bg-cover.jpg)
+  background-position: center center
+.content
+  background: $white
+  position: relative
+  top: -50px
+
+.btn-amazon
+  background-color: #EAB431 !important
+  color: $text-color !important
+  &:hover
+    background-color: darken(#EAB431, 5%) !important
+    color: $text-color
+  &:visited
+    color: $text-color !important
+

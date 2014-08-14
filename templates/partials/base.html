@@ -7,6 +7,7 @@
   {# Grab the title and description from the CMS general settings. #}
   {% set site_title = getSetting('siteName')%}
   {% set site_description = getSetting('siteDescription')%}
+  {% set current_url = getCurrentUrl() %}
 
   <head>
     <meta charset="utf-8">
@@ -23,9 +24,12 @@
     <!-- build:css /static/css/minified.css -->
     <link rel="stylesheet" href="/static/css/app.css"/>
     <link rel="stylesheet" href="/static/css/wysiwyg_figures.css"/>
+    <link rel="stylesheet" href="/static/css/fluidbox.css">
     <!-- endbuild -->
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.7.1/modernizr.min.js"></script>
+    <script type="text/javascript" src="//use.typekit.net/tbb7tun.js"></script>
+    <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
     {% block head_extra %}{% endblock %}
   </head>
@@ -35,18 +39,17 @@
         <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
       <![endif]-->
 
-      {% include "templates/partials/header.html" %}
 
       {% block content %}{% endblock %}
 
       {% include "templates/partials/footer.html" %}
 
       <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-      <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/3.0.4/jquery.imagesloaded.min.js"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/3.0.4/jquery.imagesloaded.min.js"></script>
 
       <!-- build:js /static/javascript/app.min.js -->
-      <script src="/static/javascript/webhook-js/webhook-affix.js"></script>
       <script src="/static/javascript/fluidbox/jquery.fluidbox.js"></script>
+      <script src="/static/javascript/parallax/jquery.parallax.js"></script>
       <script src="/static/javascript/app.js"></script>
       <!-- endbuild -->
 
