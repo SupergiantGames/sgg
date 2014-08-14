@@ -18,9 +18,9 @@
     {% include "templates/partials/header.html" %}
 
     <ul id="scene">
-      <li class="layer" data-depth="0.40"><img src="/static/images/{{ item.name }}/title_02.png"></li>
-      <li class="layer" data-depth="1"><img src="/static/images/{{ item.name }}/title_03.png"></li>
-      <li class="layer" data-depth="0.20"><img src="/static/images/{{ item.name }}/title_04.png"></li>
+      <li class="layer" data-depth="0.40"><img src="/static/images/{{ item.name|lower }}/title_02.png"></li>
+      <li class="layer" data-depth="1"><img src="/static/images/{{ item.name|lower }}/title_03.png"></li>
+      <li class="layer" data-depth="0.20"><img src="/static/images/{{ item.name|lower }}/title_04.png"></li>
     </ul>
   </div>
 
