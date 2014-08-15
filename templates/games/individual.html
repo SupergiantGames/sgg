@@ -14,14 +14,22 @@
 {% block content %}
 
 
-  <div class="title">
+  <div class="title" style="background-image: url({{ item.title_background.url }})">
     {% include "templates/partials/header.html" %}
 
     <ul id="scene">
-      <li class="layer" data-depth="0.40"><img src="/static/images/{{ item.name|lower }}/title_02.png"></li>
-      <li class="layer" data-depth="1"><img src="/static/images/{{ item.name|lower }}/title_03.png"></li>
-      <li class="layer" data-depth="0.20"><img src="/static/images/{{ item.name|lower }}/title_04.png"></li>
+      {% for image in item.title_image %}
+        <li class="layer" data-depth="{{ image.caption }}"><img src="{{ image.url }}"></li>
+      {% endfor %}
     </ul>
+  </div>
+
+  <div class="game-news">
+    <div class="container">
+      {% set blog = getItems(item.blog) %}
+      {% set blog = blog|sort('publish_date', true)%}
+      <strong><span class="fa fa-star"></span> From the Supergiant blog:</strong> <a href="{{ url(blog[0]) }}">{{ blog[0].name }}</a>
+    </div>
   </div>
 
   <div class="game-info">
@@ -36,8 +44,9 @@
           {% endif %}
         {% endfor%}
         </p>
-        <a href="{{ item.steam }}" class="btn btn-invert fa fa-steam-square"> Buy it on Steam</a>
-        <a href="{{ item.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Buy it on Amazon</a>
+        <a href="{{ item.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
+        <a href="{{ item.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
+        <a href="{{ item.ps_store }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
       </div>
       {% set reviews = getItems(item.reviews) %}
       <div class="half game-info-reviews">
@@ -75,16 +84,6 @@
       <div class="store-text">
       </div>
     </div>
-  </div>
-  <div class="updates">
-    <h2>Latest updates</h2>
-    {% set blog = getItems(item.blog) %}
-    {% set blog = blog|sort('publish_date', true)%}
-    <ul>
-      {% for post in blog %}
-        <li><a href="{{ url(post) }}">{{ post.name }}</a></li>
-      {% endfor %}
-    </ul>
   </div>
 
 

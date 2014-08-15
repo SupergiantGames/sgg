@@ -1,5 +1,4 @@
 .title
-  background: url(/static/images/transistor/title_01.jpg)
   background-size: cover
   overflow: hidden
 #scene
@@ -19,7 +18,10 @@
     +span-columns(6)
     +omega(2n)
 
-
+.game-news
+  background: #D9D3CD
+  padding: $gutter
+  text-align: center
 
 .store
   background: #3A7665
@@ -176,3 +178,11 @@ nav
   &:visited
     color: $text-color !important
 
+.btn-ps
+  background-color: #184668 !important
+  color: $white !important
+  &:hover
+    background-color: darken(#184668, 5%) !important
+    color: $white
+  &:visited
+    color: $white !important
