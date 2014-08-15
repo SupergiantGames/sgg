@@ -117,12 +117,29 @@
   {# RELATED STORE ITEMS #}
 
 
-  <div class="store">
+  <div class="store" style="background-color: {{ item.primary_color }}">
     <div class="container">
       <div class="store-album">
         {{ item.soundtrack.html|safe }}
       </div>
-      <div class="store-text">
+      <div class="store-items">
+        <h2>Grab some gear</h2>
+        <p>Purchase the {{ item.name }} soundtrack and other items from our store.</p>
+
+        {% set products = getItems(item.store) %}
+
+        <hr>
+
+        <ul>
+        {% for product in products %}
+          <li>
+            <a href="{{ product.shopify.url }}">
+              <img src="{{ product.shopify.thumbnail_url }}">
+              {{ product.name  }}
+            </a>
+          </li>
+        {% endfor %}
+        </ul>
       </div>
     </div>
   </div>
