@@ -28,7 +28,9 @@
     <div class="container">
       {% set blog = getItems(item.blog) %}
       {% set blog = blog|sort('publish_date', true)%}
-      <strong><span class="fa fa-star"></span> From the Supergiant blog:</strong> <a href="{{ url(blog[0]) }}">{{ blog[0].name }}</a>
+      {% if blog[0]%}
+        <strong><span class="fa fa-star"></span> From the Supergiant blog:</strong> <a href="{{ url(blog[0]) }}">{{ blog[0].name }}</a>
+      {% endif %}
     </div>
   </div>
 
