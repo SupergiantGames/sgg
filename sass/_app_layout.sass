@@ -47,25 +47,25 @@
     position: relative
     display: block
     font-style: italic
-    padding: 0 $gutter $base-line-height / 2 $base-line-height
-    margin-bottom: $base-line-height / 2
+    padding: $base-line-height / 2 $gutter $base-line-height / 2 $base-line-height
     color: darken(#D9D3CD, 30%)
-    border-bottom: solid 1px rgba(0,0,0,.1)
+    border-top: solid 1px rgba(0,0,0,.1)
     &:before
       content: '"'
       position: absolute
       color: $text-color
       font-size: 200%
-      top: -10px
+      top: 0px
       left: 0px
   .game-info-reviews
     padding: $gutter
   .score
     font-weight: bold
-    margin-bottom: $base-line-height
     display: block
     color: $text-color
     padding-left: $base-line-height
+    margin-left: $base-line-height
+    margin-bottom: $base-line-height / 2
   img
     display: inline-block
 .media
