@@ -14,6 +14,13 @@
 {% block content %}
 
 
+  {# PARALLAX SCENE #}
+  {# PARALLAX SCENE #}
+  {# PARALLAX SCENE #}
+  {# PARALLAX SCENE #}
+  {# PARALLAX SCENE #}
+
+
   <div class="title" style="background-image: url({{ item.title_background.url }})">
     {% include "templates/partials/header.html" %}
 
@@ -24,6 +31,13 @@
     </ul>
   </div>
 
+
+  {# SINGLE RELATED BLOG ITEM #}
+  {# SINGLE RELATED BLOG ITEM #}
+  {# SINGLE RELATED BLOG ITEM #}
+  {# SINGLE RELATED BLOG ITEM #}
+  {# SINGLE RELATED BLOG ITEM #}
+
   <div class="game-news">
     <div class="container">
       {% set blog = getItems(item.blog) %}
@@ -33,6 +47,13 @@
       {% endif %}
     </div>
   </div>
+
+
+  {# GAME INFO AND PRESS #}
+  {# GAME INFO AND PRESS #}
+  {# GAME INFO AND PRESS #}
+  {# GAME INFO AND PRESS #}
+  {# GAME INFO AND PRESS #}
 
   <div class="game-info">
     <div class="container">
@@ -52,7 +73,7 @@
       </div>
       {% set reviews = getItems(item.reviews) %}
       <div class="half game-info-reviews">
-        <h2>From the press</h2>
+        <h2>What people are saying</h2>
         {% for review in reviews %}
           <span class="excerpt">{{ review.excerpt }}</span>
           <a href="{{ review.url }}" class="score" style="background: url({{ review.publication_logo.url }}) no-repeat center left">
@@ -62,6 +83,12 @@
       </div>
     </div>
   </div>
+
+  {# RELATED SCREENS AND VIDEO #}
+  {# RELATED SCREENS AND VIDEO #}
+  {# RELATED SCREENS AND VIDEO #}
+  {# RELATED SCREENS AND VIDEO #}
+  {# RELATED SCREENS AND VIDEO #}
 
   <div class="media">
     {% set gallery = getItem(item.gallery) %}
@@ -83,6 +110,13 @@
     </ul>
   </div>
 
+  {# RELATED STORE ITEMS #}
+  {# RELATED STORE ITEMS #}
+  {# RELATED STORE ITEMS #}
+  {# RELATED STORE ITEMS #}
+  {# RELATED STORE ITEMS #}
+
+
   <div class="store">
     <div class="container">
       <div class="store-album">
@@ -93,85 +127,4 @@
     </div>
   </div>
 
-
-
-
-
-
-  <p><a href="/games/">View a list of all games</a></p>
-  <h1>{{ item.name }}</h1>
-  <ul>
-      <li>
-        <strong>Name: </strong>
-        {{ item.name }}
-      </li>
-      <li>
-        <strong>Create Date: </strong>
-        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
-        {{ item.create_date|date('F d Y') }}
-      </li>
-      <li>
-        <strong>Last Updated: </strong>
-        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
-        {{ item.last_updated|date('F d Y') }}
-      </li>
-      <li>
-        <strong>Publish Date: </strong>
-        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
-        {{ item.publish_date|date('F d Y') }}
-      </li>
-      <li>
-        <strong>Box art: </strong>
-        {# You can pull out a lot more information from the image property. Info here: #}
-        {# http://www.webhook.com/docs/widget-template-reference/#image #}
-        <img src="{{ item.box_art|imageSize(200) }}" />
-      </li>
-      <li>
-        <strong>Logo: </strong>
-        {# You can pull out a lot more information from the image property. Info here: #}
-        {# http://www.webhook.com/docs/widget-template-reference/#image #}
-        <img src="{{ item.logo|imageSize(200) }}" />
-      </li>
-      <li>
-        <strong>About: </strong>
-        {{ item.about|safe }}
-      </li>
-      <li>
-        <strong>Steam: </strong>
-        {{ item.steam }}
-      </li>
-      <li>
-        <strong>Amazon: </strong>
-        {{ item.amazon }}
-      </li>
-      <li>
-        <strong>Preview URL: </strong>
-        {{ item.preview_url }}
-      </li>
-      <li>
-        <strong>Platforms: </strong>
-        {# List the checkboxes available. Output their values. #}
-        <ul>
-          {% for option in item.platforms %}
-            {# Output the values for every option. Alternatively, wrap this in an if statement to only show True values. #}
-            <li>
-              {{ option.label }}: {{ option.value }}
-            </li>
-          {% endfor%}
-        </ul>
-      </li>
-      <li>
-        <strong>Original release date: </strong>
-        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
-        {{ item.original_release_date|date('F d Y') }}
-      </li>
-      <li>
-        <strong>Gallery: </strong>
-        {# Relations require some special code. More info about relations here: #}
-        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
-        {% set relation = getItem(item.gallery) %}
-        {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
-        <a href="{{ url(relation) }}">{{ relation.name }}</a>
-      </li>
-  </ul>
 {% endblock %}
