@@ -28,6 +28,7 @@
       </p>
     </div>
   </div>
+  <div class="content">
     <div class="container">
       <aside>
         <ul class="social-list">
@@ -38,7 +39,7 @@
         </ul>
         <a href=""></a>
       </aside>
-      <section>
+      <article>
         {{ item.body|safe }}
         {# Relations require some special code. More info about relations here: #}
         {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
@@ -55,8 +56,8 @@
         {{ item.slug }}
         {# Relations require some special code. More info about relations here: #}
         {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
-      </section>
-      <div class="blog-game">
+      </article>
+      <section>
         {% set games = getItems(item.games ) %}
 
         {% for game in games|slice(0,1) %}
@@ -68,6 +69,7 @@
           <a href="{{ game.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
           <a href="{{ game.ps_store }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
         {% endfor %}
-      </div>
+      </section>
+    </div>
   </div>
 {% endblock %}

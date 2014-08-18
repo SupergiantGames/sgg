@@ -15,7 +15,8 @@
   background: url(http://subtlepatterns.com/patterns/dark_geometric.png)
   margin-bottom: $gutter
   color: rgba(255,255,255,.5)
-  padding: $gutter 0
+  .container
+    padding: $gutter 0
   h1
     color: $white
     font-family: $base-font-family
@@ -226,10 +227,6 @@ nav
   background-size: cover
   background-image: url(/static/images/transistor/bg-cover.jpg)
   background-position: center center
-.content
-  background: $white
-  position: relative
-  top: -50px
 
 .btn-amazon
   background-color: #EAB431 !important
@@ -277,7 +274,7 @@ nav
     margin-bottom: 0
 
 body.blog-individual
-  section
+  article
     +span-columns(7)
     border-left: solid 1px $table-border-color
     border-right: solid 1px $table-border-color
@@ -286,7 +283,7 @@ body.blog-individual
       margin: auto
   aside
     +span-columns(2)
-  .blog-game
+  section
     +span-columns(3)
     +omega()
     img, .btn
@@ -303,4 +300,8 @@ body.blog-individual
       width: 20px
       text-align: center
       display: inline-block
+
+footer
+  background: $gray-darker
+  height: 200px
 
