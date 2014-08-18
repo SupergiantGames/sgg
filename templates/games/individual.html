@@ -11,8 +11,10 @@
 {% extends "templates/partials/base.html" %}
 {# This sets our page <title>. It will append this games's name to the site title defined in base.html #}
 {% block title %}{% parent %} - {{ item.name }}{% endblock %}
-{% block content %}
 
+{% block body_class %}body-title{% endblock %}
+
+{% block content %}
 
   {# PARALLAX SCENE #}
   {# PARALLAX SCENE #}
@@ -22,7 +24,7 @@
 
 
   <div class="title" style="background-image: url({{ item.title_background.url }})">
-    {% include "templates/partials/header.html" %}
+    <div class="header-bg"></div>
 
     <ul id="scene">
       {% for image in item.title_image %}
@@ -95,7 +97,7 @@
     {% set videos = getItems(item.video) %}
 
     <p class="wy-text-center">
-      Want a quick to-go bag of our media, wallpapers, and logos? <a href="{{ item.press_kit.url }}">Download this handy zip file.</a>
+      Want a quick to-go bag of {{ item.name }} media, wallpapers, and logos? <a href="{{ item.press_kit.url }}">Download this handy zip file.</a>
     </p>
 
     <ul>

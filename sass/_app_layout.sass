@@ -1,8 +1,17 @@
+.body-title nav
+  position: absolute
 .title
   background-size: cover
   overflow: hidden
+  position: relative
+.header-bg
+  position: absolute
+  width: 100%
+  height: 120px
+  left: 0
+  top: 0
+  background: $background-color
 #scene
-  z-index: 3
   position: relative
   bottom: -20px
   max-width: 1200px
@@ -115,6 +124,7 @@
 .media
   padding: $gutter * 2 $gutter * 2 $gutter $gutter * 2
   background: url(http://subtlepatterns.com/patterns/dark_geometric.png)
+  // background: url(http://subtlepatterns.com/patterns/purty_wood.png)
   p
     color: $text-light
   ul
@@ -160,9 +170,7 @@
 
 
 nav
-  background: $background-color
-  z-index: 2
-  position: absolute
+  z-index: 4
   top: 0
   left: 0
   right: 0
@@ -175,7 +183,6 @@ nav
     background: rgba(0,0,0,.1)
     padding: 0 $base-line-height / 2
     height: 60px
-    z-index: 20
   ul li
     display: inline-block
   ul li a
