@@ -12,12 +12,16 @@
   top: 0
   background: $background-color
 .page-title
-  height: 120px
-  background: $gray-dark
+  background: #3A7664
   margin-bottom: $gutter
+  color: rgba(255,255,255,.5)
+  padding: $gutter 0
   h1
     color: $white
     font-family: $base-font-family
+    margin-bottom: $base-line-height / 4
+  p:last-child
+    margin-bottom: 0
 #scene
   position: relative
   bottom: -20px
@@ -254,11 +258,20 @@ nav
     padding-bottom: $base-line-height
     margin-bottom: $base-line-height
     border-bottom: solid 1px $table-border-color
+    +clearfix
+  .image
+    width: 200px
+    float: left
+    padding-top: 112px
+    position: relative
+  .blog-list-body
+    padding-left: 220px
   p
     font-size: 90%
     line-height: 1.5
   p.date
     font-size: 80%
     line-height: 1.5
-    color: #D9D3CD
+    color: #3A7664
     font-weight: bold
+    margin-bottom: 0

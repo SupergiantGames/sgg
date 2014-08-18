@@ -33,6 +33,7 @@
   <div class="page-title">
     <div class="container">
       <h1>Blog</h1>
+      <p>Follow us on Twitter or grab the RSS.</p>
     </div>
   </div>
   <div class="container">
@@ -42,9 +43,12 @@
       {% for object in data %}
         <li>
           <a href="{{ url(object) }}">
-            <p class="date">{{ object.publish_date|date('M d Y') }}</p>
-            <h3>{{ object.name }}</h3>
-            <p>{{ object.body|striptags|truncate(200) }}</p>
+            <div class="image" style="background-image:url({{ object.image|imageSize(200) }})"></div>
+            <div class="blog-list-body">
+              <p class="date">{{ object.publish_date|date('M d Y') }}</p>
+              <h3>{{ object.name }}</h3>
+              <p>{{ object.body|striptags|truncate(200) }}</p>
+            </div>
           </a>
         </li>
       {% endfor %}
