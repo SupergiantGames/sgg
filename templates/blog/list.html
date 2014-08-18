@@ -17,8 +17,9 @@
 {# This sets our page <title>. It will append blog to the site title defined in base.html #}
 {% block title %}{% parent %} - blog{% endblock %}
 
-{% block content %}
+{% block body_class %}blog{% endblock %}
 
+{% block content %}
   {# The first thing we do is call blog data from the CMS. #}
   {% set data = get('blog') %}
 
@@ -27,18 +28,30 @@
   {% set data = data|sort('publish_date', true) %}
 
   {# This is how you set pagination. It's always important to do this after your sort. #}
-  {% set data = paginate(data, 5) %}
+  {% set data = paginate(data, 10) %}
 
-  <h1>List of blog</h1>
+  <div class="page-title">
+    <div class="container">
+      <h1>Blog</h1>
+    </div>
+  </div>
+  <div class="container">
 
-  {# This forloop can use any data from http:localhost:2000/cms/#/form/blog/ #}
-  <ul>
-    {% for object in data %}
-      <li><a href="{{ url(object) }}">{{ object.name }}</a></li>
-    {% endfor %}
-  </ul>
+    {# This forloop can use any data from http:localhost:2000/cms/#/form/blog/ #}
+    <ul class="blog-list">
+      {% for object in data %}
+        <li>
+          <a href="{{ url(object) }}">
+            <p class="date">{{ object.publish_date|date('M d Y') }}</p>
+            <h3>{{ object.name }}</h3>
+            <p>{{ object.body|striptags|truncate(200) }}</p>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
 
-  {# The actual pagination template, feel free to edit or replace the default one. #}
-  {% include "templates/partials/paginator.html" %}
+    {# The actual pagination template, feel free to edit or replace the default one. #}
+    {% include "templates/partials/paginator.html" %}
+  </div>
 
 {% endblock %}

@@ -1,6 +1,6 @@
 .body-title nav
   position: absolute
-.title
+.parallax
   background-size: cover
   overflow: hidden
   position: relative
@@ -11,6 +11,13 @@
   left: 0
   top: 0
   background: $background-color
+.page-title
+  height: 120px
+  background: $gray-dark
+  margin-bottom: $gutter
+  h1
+    color: $white
+    font-family: $base-font-family
 #scene
   position: relative
   bottom: -20px
@@ -237,3 +244,21 @@ nav
     color: $white
   &:visited
     color: $white !important
+
+.blog-list
+  a
+    color: $text-color
+  h3, p
+    margin-bottom: $base-line-height / 4
+  li
+    padding-bottom: $base-line-height
+    margin-bottom: $base-line-height
+    border-bottom: solid 1px $table-border-color
+  p
+    font-size: 90%
+    line-height: 1.5
+  p.date
+    font-size: 80%
+    line-height: 1.5
+    color: #D9D3CD
+    font-weight: bold
