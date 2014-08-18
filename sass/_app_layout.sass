@@ -12,7 +12,7 @@
   top: 0
   background: $background-color
 .page-title
-  background: #3A7664
+  background: url(http://subtlepatterns.com/patterns/dark_geometric.png)
   margin-bottom: $gutter
   color: rgba(255,255,255,.5)
   padding: $gutter 0
@@ -275,3 +275,32 @@ nav
     color: #3A7664
     font-weight: bold
     margin-bottom: 0
+
+body.blog-individual
+  section
+    +span-columns(7)
+    border-left: solid 1px $table-border-color
+    border-right: solid 1px $table-border-color
+    padding: 0 $gutter
+    iframe
+      margin: auto
+  aside
+    +span-columns(2)
+  .blog-game
+    +span-columns(3)
+    +omega()
+    img, .btn
+      width: 100%
+      margin-bottom: $base-line-height / 4
+  .social-list a
+    font-size: 80%
+    display: block
+    color: $text-color
+    line-height: 1
+    padding: $base-line-height / 2 0
+    border-bottom: solid 1px $table-border-color
+    &.fa:before
+      width: 20px
+      text-align: center
+      display: inline-block
+

@@ -11,76 +11,63 @@
 {% extends "templates/partials/base.html" %}
 {# This sets our page <title>. It will append this blog's name to the site title defined in base.html #}
 {% block title %}{% parent %} - {{ item.name }}{% endblock %}
+
+{% block body_class %}blog-individual{% endblock %}
+
 {% block content %}
-  <p><a href="{{ url('blog') }}">View a list of all blog</a></p>
-  <h1>{{ item.name }}</h1>
-  <ul>
-      <li>
-        <strong>Name: </strong>
-        {{ item.name }}
-      </li>
-      <li>
-        <strong>Create Date: </strong>
-        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
-        {{ item.create_date|date('F d Y') }}
-      </li>
-      <li>
-        <strong>Last Updated: </strong>
-        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
-        {{ item.last_updated|date('F d Y') }}
-      </li>
-      <li>
-        <strong>Publish Date: </strong>
-        {# Format the date. You can use PHP's date function to format as needed. http://php.net/manual/en/function.date.php #}
-        {{ item.publish_date|date('F d Y') }}
-      </li>
-      <li>
-        <strong>Author(s): </strong>
-        {# Relations require some special code. More info about relations here: #}
-        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
+  <div class="page-title">
+    <div class="container">
+      <a href="/blog/">Blog</a>
+      <h1>{{ item.name }}</h1>
+      <p>
+        By
         {% for relation in getItems(item.authors) %}
-          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
-          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
+          {{ relation.name }}{% if not loop.last %},{% endif %}
         {% endfor %}
-      </li>
-      <li>
-        <strong>Body: </strong>
+        {{ item.publish_date|date('F d Y') }}
+      </p>
+    </div>
+  </div>
+    <div class="container">
+      <aside>
+        <ul class="social-list">
+          <li><a href="" class="fa fa-twitter"> Twitter</a></li>
+          <li><a href="" class="fa fa-facebook"> Facebook</a></li>
+          <li><a href="" class="fa fa-envelope"> Email</a></li>
+          <li><a href="" class="fa fa-reddit"> Reddit</a></li>
+        </ul>
+        <a href=""></a>
+      </aside>
+      <section>
         {{ item.body|safe }}
-      </li>
-      <li>
-        <strong>Preview URL: </strong>
-        {{ item.preview_url }}
-      </li>
-      <li>
-        <strong>Video: </strong>
         {# Relations require some special code. More info about relations here: #}
         {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
         {% for relation in getItems(item.video) %}
           {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
           <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
         {% endfor %}
-      </li>
-      <li>
-        <strong>Gallery: </strong>
         {# Relations require some special code. More info about relations here: #}
         {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
         {% for relation in getItems(item.gallery) %}
           {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
           <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
         {% endfor %}
-      </li>
-      <li>
-        <strong>Slug: </strong>
         {{ item.slug }}
-      </li>
-      <li>
-        <strong>Games: </strong>
         {# Relations require some special code. More info about relations here: #}
         {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
-        {% for relation in getItems(item.games) %}
+      </section>
+      <div class="blog-game">
+        {% set games = getItems(item.games ) %}
+
+        {% for game in games|slice(0,1) %}
           {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
-          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
+          <a href="{{ url(game) }}">
+            <img src="{{ game.box_art|imageSize(400) }}">
+          </a>
+          <a href="{{ game.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
+          <a href="{{ game.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
+          <a href="{{ game.ps_store }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
         {% endfor %}
-      </li>
-  </ul>
+      </div>
+  </div>
 {% endblock %}
