@@ -246,7 +246,7 @@ nav
   &:visited
     color: $white !important
 
-.blog-list
+ul.blog-list
   a
     color: $text-color
   h3, p
@@ -272,6 +272,13 @@ nav
     color: #3A7664
     font-weight: bold
     margin-bottom: 0
+
+body.blog-list
+  section
+    +span-columns(8)
+  aside
+    +span-columns(4)
+    +omega
 
 body.blog-individual
   article

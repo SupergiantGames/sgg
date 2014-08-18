@@ -65,10 +65,11 @@
           <a href="{{ url(game) }}">
             <img src="{{ game.box_art|imageSize(400) }}">
           </a>
-          <a href="{{ game.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
-          <a href="{{ game.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
-          <a href="{{ game.ps_store }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
+          <a href="{{ game.steam.url }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
+          <a href="{{ game.amazon.url }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
+          <a href="{{ game.ps_store.url }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
         {% endfor %}
+        <hr>
       </section>
     </div>
   </div>

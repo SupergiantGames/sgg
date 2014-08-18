@@ -17,7 +17,7 @@
 {# This sets our page <title>. It will append blog to the site title defined in base.html #}
 {% block title %}{% parent %} - blog{% endblock %}
 
-{% block body_class %}blog{% endblock %}
+{% block body_class %}blog-list{% endblock %}
 
 {% block content %}
   {# The first thing we do is call blog data from the CMS. #}
@@ -38,6 +38,7 @@
   </div>
   <div class="container">
 
+    <section>
     {# This forloop can use any data from http:localhost:2000/cms/#/form/blog/ #}
     <ul class="blog-list">
       {% for object in data %}
@@ -56,6 +57,11 @@
 
     {# The actual pagination template, feel free to edit or replace the default one. #}
     {% include "templates/partials/paginator.html" %}
+    </section>
+    <aside>
+      <a class="twitter-timeline" data-dnt="true" href="https://twitter.com/SupergiantGames" data-widget-id="501508371317399552" data-chrome="nofooter">Tweets by @SupergiantGames</a>
+      <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    </aside>
   </div>
 
 {% endblock %}
