@@ -4,4 +4,5 @@ $(document).ready(function() {
       limitY: 20,
       limitX: 50,
   });
+  $("figure[data-type='video']").wrap("<div class='video-wrap'></div>");
 });

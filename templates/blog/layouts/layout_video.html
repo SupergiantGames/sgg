@@ -12,7 +12,7 @@
 {# This sets our page <title>. It will append this blog's name to the site title defined in base.html #}
 {% block title %}{% parent %} - {{ item.name }}{% endblock %}
 
-{% block body_class %}blog-individual{% endblock %}
+{% block body_class %}blog-individual blog-individual-video{% endblock %}
 
 {% block content %}
   <div class="page-title">
@@ -61,48 +61,24 @@
           </div>
         </div>
       </aside>
-      <article>
+      <article class="video">
+        {% set videos = getItems(item.video) %}
+
+
+        {% for video in videos %}
+        <div class="video-wrap">
+          <figure data-type="video">
+            {{ video.video.html|safe }}
+          </figure>
+        </div>
+        {% endfor %}
+
+        <hr>
+
         {{ item.body|safe }}
-        {# Relations require some special code. More info about relations here: #}
-        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
-        {% for relation in getItems(item.video) %}
-          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
-          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
-        {% endfor %}
-        {# Relations require some special code. More info about relations here: #}
-        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
-        {% for relation in getItems(item.gallery) %}
-          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
-          <a href="{{ url(relation) }}">{{ relation.name }}</a>{% if not loop.last %},{% endif %}
-        {% endfor %}
-        {# Relations require some special code. More info about relations here: #}
-        {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
+
       </article>
-      <section>
-        {% set games = getItems(item.games ) %}
-
-        {% for game in games|slice(0,1) %}
-          {# You can ouput more than just the name. Feel free to output more fields from the CMS. #}
-          <a href="{{ url(game) }}">
-            <img src="{{ game.box_art|imageSize(400) }}">
-          </a>
-          <a href="{{ game.steam.url }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
-          <a href="{{ game.amazon.url }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
-          <a href="{{ game.ps_store.url }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
-
-          <hr>
-          {% set products = getItems(game.store ) %}
-
-          {% for product in products|slice(0,1) %}
-            <a href="{{ product.shopify.url }}" class="store-promo">
-              <span>In our store</span>
-              <img src="{{ product.shopify.thumbnail_url }}">
-              {{ product.name }}
-            </a>
-          {% endfor %}
-        {% endfor %}
-
-      </section>
     </div>
   </div>
 {% endblock %}
+
