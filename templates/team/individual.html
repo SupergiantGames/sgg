@@ -39,8 +39,16 @@
         {{ item.full_name.first }} {{ item.full_name.last }}
       </li>
       <li>
+        <strong>Twitter: </strong>
+        {{ item.twitter }}
+      </li>
+      <li>
         <strong>Email: </strong>
         {{ item.email }}
+      </li>
+      <li>
+        <strong>Role: </strong>
+        {{ item.role }}
       </li>
       <li>
         <strong>Articles: </strong>
@@ -68,6 +76,14 @@
       <li>
         <strong>Slug: </strong>
         {{ item.slug }}
+      </li>
+      <li>
+        <strong>Favorite games: </strong>
+        {{ item.favorite_games|safe }}
+      </li>
+      <li>
+        <strong>Hide from team page?: </strong>
+        {{ item.hide_from_team_page }}
       </li>
   </ul>
 {% endblock %}

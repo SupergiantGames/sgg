@@ -226,21 +226,26 @@ nav
   ul
     display: inline-block
     float: right
-    background: rgba(0,0,0,.1)
-    padding: 0 $base-line-height / 2
-    height: 60px
+    background: $white
+    border: solid 1px darken(#D9D3CD, 10%)
+    border-top: none
+
   ul li
-    display: inline-block
+    display: block
+    float: left
   ul li a
-    display: inline-block
+    display: block
+    line-height: 37px
     padding: 0 $base-line-height / 2
-    line-height: 60px
     color: $gray
     text-transform: uppercase
     font-size: 80%
+    border-right: solid 1px #D9D3CD
     &.fa
       padding: $base-line-height / 2 $base-line-height / 4
-      color: #CA0000 !important
+      background: #CA0000
+      color: $white !important
+      border: none
     &.active
       color: #CA0000
       font-weight: bold
