@@ -318,6 +318,7 @@ body.blog-individual
     border-left: solid 1px $table-border-color
     border-right: solid 1px $table-border-color
     padding: 0 $gutter
+    margin-bottom: $gutter
     iframe
       margin: auto
   aside
@@ -342,5 +343,31 @@ body.blog-individual
 
 footer
   background: $gray-darker
-  height: 200px
+  padding: $base-line-height /2  0 $base-line-height 0
+  position: relative
+  border-top: solid 10px $table-border-color
+  &:before
+    content: " "
+    position: absolute
+    bottom: 0
+    height: 30%
+    width: 100%
+    background: rgba(0,0,0,.2)
+  .logo
+    width: 100px
+    display: inline-block
+    z-index: 3
+    position: relative
+  ul
+    float: right
+  ul li
+    display: inline-block
+    a, a:visited
+      display: inline-block
+      padding: $base-line-height / 2
+      font-size: 90%
+      color: $gray
+    a.fa
+      padding: $base-line-height / 4
+      color: $white
 

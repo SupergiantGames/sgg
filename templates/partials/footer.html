@@ -1,2 +1,16 @@
 <footer>
+  <div class="container">
+    <a href="/" class="logo"><img src="/static/images/logo.png"/></a>
+    <ul>
+      <li><a href="/games/" {% if current_url|startsWith('/games/') %} class="active"{% endif %}>Games</a></li>
+      <li><a href="/blog/" {% if current_url|startsWith('/blog/') %} class="active"{% endif %}>Blog</a></li>
+      <li><a href="/team/" {% if current_url|startsWith('/team/') %} class="active"{% endif %}>Team</a></li>
+      <li><a href="/jobs/" {% if current_url|startsWith('/jobs/') %} class="active"{% endif %}>Jobs</a></li>
+      <li><a href="/contact/" {% if current_url|startsWith('/contact/') %} class="active"{% endif %}>Contact</a></li>
+      <li><a href="https://store.supergiantgames.com">Store</a></li>
+      <li><a href="" class="fa fa-twitter"></a></li>
+      <li><a href="" class="fa fa-facebook"></a></li>
+      <li><a href="" class="fa fa-youtube-play"></a></li>
+    </ul>
+  </div>
 </footer>
