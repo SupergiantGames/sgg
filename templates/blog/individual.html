@@ -48,7 +48,14 @@
           <li><a href="" class="fa fa-envelope"> Email</a></li>
           <li><a href="" class="fa fa-reddit"> Reddit</a></li>
         </ul>
-        <a href=""></a>
+        <div class="mailing-list">
+          <div class="wy-control-group">
+            <label>Join our mailing list</label>
+            <div class="wy-control">
+              <input type="email" placeholder="your@email.com">
+            </div>
+          </div>
+        </div>
       </aside>
       <article>
         {{ item.body|safe }}
@@ -79,8 +86,19 @@
           <a href="{{ game.steam.url }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
           <a href="{{ game.amazon.url }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
           <a href="{{ game.ps_store.url }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
+
+          <hr>
+          {% set products = getItems(game.store ) %}
+
+          {% for product in products|slice(0,1) %}
+            <a href="{{ product.shopify.url }}" class="store-promo">
+              <span>In our store</span>
+              <img src="{{ product.shopify.thumbnail_url }}">
+              {{ product.name }}
+            </a>
+          {% endfor %}
         {% endfor %}
-        <hr>
+
       </section>
     </div>
   </div>
