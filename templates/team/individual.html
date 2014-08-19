@@ -12,7 +12,7 @@
 {# This sets our page <title>. It will append this team's name to the site title defined in base.html #}
 {% block title %}{% parent %} - {{ item.name }}{% endblock %}
 {% block content %}
-  <p><a href="/team/">View a list of all team</a></p>
+  <p><a href="{{ url('team') }}">View a list of all team</a></p>
   <h1>{{ item.name }}</h1>
   <ul>
       <li>
@@ -64,6 +64,10 @@
       <li>
         <strong>About: </strong>
         {{ item.about|safe }}
+      </li>
+      <li>
+        <strong>Slug: </strong>
+        {{ item.slug }}
       </li>
   </ul>
 {% endblock %}
