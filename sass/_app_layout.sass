@@ -14,15 +14,35 @@
 .page-title
   background: url(http://subtlepatterns.com/patterns/dark_geometric.png)
   margin-bottom: $gutter
-  color: rgba(255,255,255,.5)
+  border-top: solid 1px rgba(0,0,0,.1)
+  border-bottom: solid 1px rgba(0,0,0,.1)
+  position: relative
   .container
     padding: $gutter 0
   h1
-    color: $white
-    font-family: $base-font-family
-    margin-bottom: $base-line-height / 4
-  p:last-child
     margin-bottom: 0
+    color: $white
+    +font-smooth
+  p
+    font-size: 90%
+    margin-bottom: 0
+    color: $gray
+  .author
+    text-transform: uppercase
+    color: $gray-light
+  .prev, .next
+    position: absolute
+    top: 50%
+    margin-top: -30px
+    display: inline-block
+    padding: $base-line-height $base-line-height / 2
+    background: darken(#CA0000, 10%)
+    background: #3A7665
+    color: $white
+  .prev
+    left: 0
+  .next
+    right: 0
 #scene
   position: relative
   bottom: -20px
@@ -218,6 +238,8 @@ nav
     display: inline-block
     position: absolute
     padding: $base-line-height / 2
+    padding-left: 0
+    z-index: 2
     img
       display: inline-block
       z-index: 6

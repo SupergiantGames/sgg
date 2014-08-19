@@ -17,12 +17,18 @@
 {% block content %}
   <div class="page-title">
     <div class="container">
-      <a href="/blog/">Blog</a>
+      {% set prev = prevItem(item, 'publish_date', true) %}
+      {% set next = nextItem(item, 'publish_date', true) %}
+
+      <a href="{{ url(prev) }}" class="prev fa fa-chevron-left"></a>
+      <a href="{{ url(next) }}" class="next fa fa-chevron-right"></a>
+
+      <p><a href="/blog/">Blog</a> &raquo;</p>
       <h1>{{ item.name }}</h1>
       <p>
         By
         {% for relation in getItems(item.authors) %}
-          {{ relation.name }}{% if not loop.last %},{% endif %}
+        <span class="author">{{ relation.name }}</span>{% if not loop.last %},{% endif %}
         {% endfor %}
         {{ item.publish_date|date('F d Y') }}
       </p>
