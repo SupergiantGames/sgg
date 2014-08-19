@@ -12,13 +12,21 @@
   top: 0
   background: $background-color
 .page-title
-  background: url(http://subtlepatterns.com/patterns/dark_geometric.png)
+  // background: url(http://subtlepatterns.com/patterns/dark_geometric.png)
+  background: $gray-darker
   margin-bottom: $gutter
   border-top: solid 1px rgba(0,0,0,.1)
   border-bottom: solid 1px rgba(0,0,0,.1)
   position: relative
   .container
     padding: $gutter 0
+  img
+    float: left
+    border-radius: 100%
+    margin-right: $base-line-height
+    background: $gray-dark
+    padding: $base-line-height / 4
+    border: solid 1px lighten($gray-dark, 5%)
   h1
     margin-bottom: 0
     color: $white
@@ -27,6 +35,8 @@
     font-size: 90%
     margin-bottom: 0
     color: $gray
+  a
+    color: #3A7665
   .author
     text-transform: uppercase
     color: $gray-light
