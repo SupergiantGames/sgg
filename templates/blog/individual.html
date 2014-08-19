@@ -22,8 +22,12 @@
         {% set next = nextItem(item, 'publish_date', true) %}
         {% set authors = getItems(item.authors)%}
 
-        <a href="{{ url(prev) }}" class="prev fa fa-chevron-left"></a>
-        <a href="{{ url(next) }}" class="next fa fa-chevron-right"></a>
+        {% if prev %}
+          <a href="{{ url(prev) }}" class="prev fa fa-chevron-left"></a>
+        {% endif %}
+        {% if next %}
+          <a href="{{ url(next) }}" class="next fa fa-chevron-right"></a>
+        {% endif %}
 
         <img src="{{ authors[0].image|imageCrop(75) }}">
 
