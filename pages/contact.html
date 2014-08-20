@@ -1,0 +1,62 @@
+{# ------------------------------------------------------- #}
+
+{# YOUR HOMEPAGE #}
+
+{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
+{# http://paularmstrong.github.io/swig/docs/tags/ #}
+
+{# Learn about calling data into Webhook pages here: #}
+{# http://www.webhook.com/docs/template-rules-and-filters/ #}
+
+{# ------------------------------------------------------- #}
+
+{# Confused what extends and blocks do? Watch a primer: #}
+{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
+{% extends "templates/partials/base.html" %}
+
+{# This sets our page <title>. It will append "- Homepage" to the site title defined in base. #}
+{% block title %}{% parent %} - Homepage{% endblock %}
+
+{% block body_class %}contact{% endblock %}
+
+{% block content %}
+
+  <div class="page-title">
+    <div class="container">
+      <h1>Contact us</h1>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="half">
+      asdf
+    </div>
+    <div class="half">
+      <div id="wufoo-r1volg9c1qbi23b">
+      Fill out my <a href="https://enemykite.wufoo.com/forms/r1volg9c1qbi23b">online form</a>.
+      </div>
+      <script type="text/javascript">var r1volg9c1qbi23b;(function(d, t) {
+      var s = d.createElement(t), options = {
+      'userName':'enemykite',
+      'formHash':'r1volg9c1qbi23b',
+      'autoResize':true,
+      'height':'517',
+      'async':true,
+      'host':'wufoo.com',
+      'header':'show',
+      'ssl':true};
+      s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
+      s.onload = s.onreadystatechange = function() {
+      var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
+      try { r1volg9c1qbi23b = new WufooForm();r1volg9c1qbi23b.initialize(options);r1volg9c1qbi23b.display(); } catch (e) {}};
+      var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
+      })(document, 'script');</script>
+    </div>
+
+  </div>
+{% endblock %}
+
+
+
+

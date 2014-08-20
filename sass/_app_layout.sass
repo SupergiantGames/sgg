@@ -296,6 +296,8 @@ ul.blog-list
     color: $text-color
   h3, p
     margin-bottom: $base-line-height / 4
+  h3
+    font-family: $base-font-family
   li
     padding-bottom: $base-line-height
     margin-bottom: $base-line-height
@@ -466,3 +468,8 @@ figure[data-type="video"]
     padding: $base-line-height / 4
     background: $background-color
     border: solid 1px $table-border-color
+
+body.contact
+  .half
+    +span-columns(6)
+    +omega(2n)
