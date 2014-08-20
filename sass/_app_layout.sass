@@ -1,3 +1,10 @@
+html, body
+  height: 100%
+.body-wrap
+  position: relative
+  min-height: 100%
+  padding-bottom: 100px
+
 .body-title nav
   position: absolute
 .parallax
@@ -248,8 +255,12 @@ nav
       background: #CA0000
       color: $white !important
       border: none
+    &.fa.first
+      padding-left: $base-line-height / 2
+    &.fa.last
+      padding-right: $base-line-height / 2
     &.active
-      color: #CA0000
+      color: #CA0000 !important
       font-weight: bold
     &:visited
       color: $gray
@@ -382,6 +393,10 @@ footer
   padding: $base-line-height /2  0 $base-line-height 0
   position: relative
   border-top: solid 10px $table-border-color
+  position: absolute
+  bottom: 0
+  left: 0
+  width: 100%
   &:before
     content: " "
     position: absolute
@@ -473,3 +488,10 @@ body.contact
   .half
     +span-columns(6)
     +omega(2n)
+    margin-bottom: $gutter
+  .half:last-child
+    background: rgba(255,255,255,.8)
+    padding: $gutter
+    padding-bottom: 0
+iframe #header.info
+  display: none !important

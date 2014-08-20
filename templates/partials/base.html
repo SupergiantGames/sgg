@@ -35,16 +35,17 @@
   </head>
   <body class="{% block body_class %}{% endblock %}">
     {% block body %}
-      <!--[if lt IE 7]>
-        <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-      <![endif]-->
+      <div class="body-wrap">
+        <!--[if lt IE 7]>
+          <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
 
-      {% block header %}{% include "templates/partials/header.html" %}{% endblock %}
+        {% block header %}{% include "templates/partials/header.html" %}{% endblock %}
 
-      {% block content %}{% endblock %}
+        {% block content %}{% endblock %}
 
-      {% include "templates/partials/footer.html" %}
-
+        {% include "templates/partials/footer.html" %}
+      </div>
       <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
       <script src="//cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/3.0.4/jquery.imagesloaded.min.js"></script>
 

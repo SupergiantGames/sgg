@@ -1,9 +1,10 @@
+{% set games = get('games') %}
+{% set social = get('socialmedia') %}
 <nav>
   <div class="container">
     <a href="/" class="logo"><img src="/static/images/logo.png"/></a>
     <ul>
-      <li><a href="/" class="fa fa-star"></a></li>
-      {% set games = get('games') %}
+      <li><a href="/" class="fa fa-star first last"></a></li>
       {% for game in games %}
         {% set game_url = url(game) %}
         <li><a href="{{ url(game) }}" {% if current_url == game_url %} class="active"{% endif %}>{{ game.name }}</a></li>
@@ -13,9 +14,9 @@
       {% if jobs %}<li><a href="/jobs/" {% if current_url|startsWith('/jobs/') %} class="active"{% endif %}>Jobs</a></li>{% endif %}
       <li><a href="/contact/" {% if current_url|startsWith('/contact/') %} class="active"{% endif %}>Contact</a></li>
       <li><a href="http://store.supergiantgames.com">Store</a></li>
-      <li><a href="" class="fa fa-twitter"></a></li>
-      <li><a href="" class="fa fa-facebook"></a></li>
-      <li><a href="" class="fa fa-youtube-play"></a></li>
+      <li><a href="http://www.twitter.com/{{ social.twitter }}" class="fa fa-twitter first"></a></li>
+      <li><a href="http://www.facebook.com/{{ social.facebook }}" class="fa fa-facebook"></a></li>
+      <li><a href="http://www.youtube.com/user/{{ social.youtube }}" class="fa fa-youtube-play last"></a></li>
     </ul>
   </div>
 </nav>
