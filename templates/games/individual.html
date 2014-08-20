@@ -69,9 +69,18 @@
           {% endif %}
         {% endfor%}
         </p>
-        <a href="{{ item.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
+        {% if item.steam %}
+          <a href="{{ item.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
+        {% endif %}
+        {% if item.amazon %}
         <a href="{{ item.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
-        <a href="{{ item.ps_store }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
+        {% endif %}
+        {% if item.ps_store %}
+          <a href="{{ item.ps_store }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
+        {% endif %}
+        {% if item.ms_store %}
+          <a href="{{ item.ms_store }}" class="btn btn-ms fa fa-shopping-cart"> Xbox</a>
+        {% endif %}
       </div>
       {% set reviews = getItems(item.reviews) %}
       <div class="half game-info-reviews">
