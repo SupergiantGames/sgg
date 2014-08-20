@@ -4,6 +4,7 @@
   background-size: cover
   overflow: hidden
   position: relative
+  max-height: 500px
 .header-bg
   position: absolute
   width: 100%
@@ -77,8 +78,9 @@
     +omega(2n)
 
 .game-news
-  background: #D9D3CD
+  background: $gray-darker
   padding: $gutter
+  color: $white
   text-align: center
 
 .store
@@ -262,6 +264,8 @@ nav
     img
       display: inline-block
       z-index: 6
+      width: 215px
+      height: 123px
 .game-bg
   width: 100%
   height: 500px
