@@ -432,3 +432,33 @@ figure[data-type="video"]
   left: 0
   width: 100%
   height: 100%
+
+.team-list
+  display: flex
+  flex-flow: row wrap
+  -webkit-flex-flow: row wrap
+  -moz-flex-flow: row wrap
+  li
+    +span-columns(6)
+    +omega(2n)
+    background: rgba(255,255,255,.8)
+    padding: $gutter
+    margin-bottom: $gutter
+  .head
+    +clearfix
+    background: $white
+    margin: -$gutter
+    padding: $gutter
+    border-bottom: solid 1px $table-border-color
+    margin-bottom: $gutter
+  .head h3, .head p
+    margin-bottom: $base-line-height / 4
+  .head h3
+    margin-top: $base-line-height
+  img
+    border-radius: 100%
+    float: left
+    margin-right: $base-line-height
+    padding: $base-line-height / 4
+    background: $background-color
+    border: solid 1px $table-border-color

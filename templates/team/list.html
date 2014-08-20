@@ -19,24 +19,38 @@
 
 {% block content %}
 
-  {# The first thing we do is call team data from the CMS. #}
-  {% set data = get('team') %}
+  {# The first thing we do is call team team from the CMS. #}
+  {% set team = get('team') %}
 
-  {# Next we sort the data by publish_date. The true bit reverses it so it's newest first. Learn more: #}
+  {# Next we sort the team by publish_date. The true bit reverses it so it's newest first. Learn more: #}
   {# http://www.webhook.com/docs/template-rules-and-filters/#sortproperty_reverseorder #}
-  {% set data = data|sort('publish_date', true) %}
+  {% set team = team|sort('publish_date', true) %}
 
-  {# This is how you set pagination. It's always important to do this after your sort. #}
-  {% set data = paginate(data, 5) %}
+  <div class="page-title">
+    <div class="container">
+      <h1>The Supergiant Team</h1>
+    </div>
+  </div>
 
-  <h1>List of team</h1>
+  <div class="container">
+    <ul class="team-list">
+      {% for member in team|where('hide_from_team_page', 'No') %}
+        <li>
+          <div class="head">
+            <img src="{{ member.image|imageCrop(100) }}">
+            <h3>{{ member.name }}</h3>
+            <p>{{ member.role }}</p>
+            <a href="http://www.twitter.com/{{ member.twitter }}">@{{ member.twitter }}</a>
+          </div>
+          {{ member.about|safe }}
 
-  {# This forloop can use any data from http:localhost:2000/cms/#/form/team/ #}
-  <ul>
-    {% for object in data %}
-      <li><a href="{{ url(object) }}">{{ object.name }}</a></li>
-    {% endfor %}
-  </ul>
+          <strong>Favorite games</strong>
+          {{ member.favorite_games|safe }}
+
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
 
   {# The actual pagination template, feel free to edit or replace the default one. #}
   {% include "templates/partials/paginator.html" %}
