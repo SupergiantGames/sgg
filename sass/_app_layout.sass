@@ -520,6 +520,11 @@ body.contact
 iframe #header.info
   display: none !important
 
+
+
+.mobile-menu
+  display: none
+
 +media($tablet)
   .media li
     +span-columns(4)
@@ -565,3 +570,15 @@ iframe #header.info
     .social
       float: right
 
++media($mobile)
+  .body-title nav
+    position: static
+  nav ul li
+    display: none
+    width: 100%
+    a
+      width: 100%
+  .mobile-menu
+    display: block
+  .parallax
+    display: none

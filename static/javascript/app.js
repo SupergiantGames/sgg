@@ -5,4 +5,8 @@ $(document).ready(function() {
       limitX: 50,
   });
   $("figure[data-type='video']").wrap("<div class='video-wrap'></div>");
+
+  $(document).on('click', '.mobile-menu', function(Event) {
+    $("nav ul li.mobile-li").toggle();
+  });
 });
