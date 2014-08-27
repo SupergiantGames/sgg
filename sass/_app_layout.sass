@@ -518,3 +518,28 @@ body.contact
     padding-bottom: 0
 iframe #header.info
   display: none !important
+
++media($tablet)
+  .media li
+    +span-columns(4)
+    +omega(2n)
+  .container
+    padding-right: $gutter
+    padding-left: $gutter
+    .half
+      +span-columns(8)
+      +omega()
+  .game-info
+    padding: $gutter 0
+  .header-bg
+    background: transparent
+  nav
+    height: auto
+    .container
+      padding: 0
+    .logo
+      display: none
+    ul
+      width: 100%
+    .social
+      float: right
