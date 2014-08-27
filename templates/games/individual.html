@@ -106,7 +106,7 @@
     </p>
 
     <ul>
-      {% for video in item.videos %}
+      {% for video in item.video %}
         <li>
         <a href="{{ video.video.url }}" class="media-video fa fa-youtube-play" style="background-image: url({{ video.video.thumbnail_url|imageSize(300) }})"> <span class="media-video-name">{{ video.name }}</span></a>
         </li>

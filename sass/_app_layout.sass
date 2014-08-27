@@ -19,6 +19,26 @@ html, body
   left: 0
   top: 0
   background: $background-color
+
+.team-title
+  min-height: 380px
+  background-color: #222222
+  width: 100%
+  margin-bottom: $gutter
+  .container
+    position: relative
+    min-height: 380px
+  h1
+    color: $text-invert
+    position: absolute
+    bottom: $gutter
+    left: 0
+    margin-bottom: 0
+    font-size: 250%
+    font-family: $base-font-family
+    font-weight: 300
+
+
 .page-title
   // background: url(http://subtlepatterns.com/patterns/dark_geometric.png)
   background: $gray-darker
@@ -122,7 +142,7 @@ html, body
     +outer-container
     li
       +span-columns(4)
-      +omega(3)
+      +omega(3n)
       font-size: 80%
   img
     border: solid 10px $white
