@@ -32,7 +32,6 @@ html, body
     color: $text-invert
     position: absolute
     bottom: $gutter
-    left: 0
     margin-bottom: 0
     font-size: 250%
     font-family: $base-font-family
@@ -47,7 +46,7 @@ html, body
   border-bottom: solid 10px rgba(0,0,0,.3)
   position: relative
   .container
-    padding: $gutter 0
+    padding: $gutter
   img
     float: left
     border-radius: 100%
@@ -100,6 +99,8 @@ html, body
       width: 100%
 .container
   +outer-container
+  padding-right: $gutter
+  padding-left: $gutter
   .half
     +span-columns(6)
     +omega(2n)
@@ -542,6 +543,9 @@ iframe #header.info
       padding-bottom: $gutter
   .body-wrap
     padding-bottom: 80px
+  .team-list li
+    +span-columns(8)
+    +omega()
   footer
     .logo
       display: none
@@ -560,3 +564,4 @@ iframe #header.info
       width: 100%
     .social
       float: right
+
