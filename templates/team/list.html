@@ -1,17 +1,3 @@
-{# ------------------------------------------------------- #}
-
-{# LIST VIEW OF ALL team #}
-
-{# Webhook uses the SWIG.js (like Djagno/Twig) templating system. Their documentation is here: #}
-{# http://paularmstrong.github.io/swig/docs/tags/ #}
-
-{# Learn about calling data into Webhook pages here: #}
-{# http://www.webhook.com/docs/template-rules-and-filters/ #}
-
-{# ------------------------------------------------------- #}
-
-{# Confused what extends and blocks do? Watch a primer: #}
-{# http://www.webhook.com/docs/template-inheritance-blocks/ #}
 {% extends "templates/partials/base.html" %}
 
 {# This sets our page <title>. It will append team to the site title defined in base.html #}
@@ -19,12 +5,7 @@
 
 {% block content %}
 
-  {# The first thing we do is call team team from the CMS. #}
-  {% set team = get('team') %}
-
-  {# Next we sort the team by publish_date. The true bit reverses it so it's newest first. Learn more: #}
-  {# http://www.webhook.com/docs/template-rules-and-filters/#sortproperty_reverseorder #}
-  {% set team = team|sort('publish_date', true) %}
+  {% set team = cms.team|sort('publish_date', true) %}
 
   <div class="page-title">
     <div class="container">
@@ -42,7 +23,9 @@
             <p>{{ member.role }}</p>
             <a href="http://www.twitter.com/{{ member.twitter }}">@{{ member.twitter }}</a>
           </div>
-          {{ member.about|safe }}
+          <div class="about">
+            {{ member.about|safe }}
+          </div>
 
           <strong>Favorite games</strong>
           {{ member.favorite_games|safe }}

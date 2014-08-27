@@ -151,6 +151,18 @@ module.exports.swigFunctions = function(swig) {
       }
     }
 
+    var relationshipFields = [];
+
+    if(self.typeInfo[type] && self.typeInfo[type].controls) {
+      self.typeInfo[type].controls.forEach(function(control) {
+        if(control.controlType === "relation") {
+          relationshipFields.push({ name: control.name, isSingle: control.meta.isSingle });
+        }
+      });
+    }
+
+    item = adjustRelationshipFields(relationshipFields, item);
+
     item._type = type;
     return item;
   };
@@ -165,6 +177,7 @@ module.exports.swigFunctions = function(swig) {
       return [];
     }
     var items = [];
+
     arr.forEach(function(itm) {
       var obj = getItem(itm);
       if(!_.isEmpty(obj)) {
@@ -199,6 +212,38 @@ module.exports.swigFunctions = function(swig) {
     return tmpSlug;
   }
 
+
+  var adjustRelationshipFields = function(fields, object) {
+    fields.forEach(function(field) {
+      var desc = Object.getOwnPropertyDescriptor(object, field.name);
+      if(desc && desc.get) { // Don't double dip
+        return;
+      }
+
+      var val = object[field.name];
+
+      if(field.isSingle) {
+        Object.defineProperty(object, field.name, {
+          enumerable: true,
+          configurable: true,
+          get: function() {
+            return getItem(val);
+          }
+        });
+      } else {
+        Object.defineProperty(object, field.name, {
+          enumerable: true,
+          configurable: true,
+          get: function() {
+            return getItems(val);
+          }
+        });
+      }
+    });
+
+    return object;
+  }
+
   /**
    * Returns all the data specified by the arguments
    * @param    {String} Name of type to retrieve data for
@@ -213,14 +258,23 @@ module.exports.swigFunctions = function(swig) {
       return self.cachedData[names.join(',')];
     }
 
-    // TODO, SLUG NAME THE SAME WAS CMS DOES
-
     generatedSlugs = {};
     var data = [];
     names.forEach(function(name) {
       var tempData = self.data[name] || {};
 
+      var relationshipFields = [];
+
+      if(self.typeInfo[name] && self.typeInfo[name].controls) {
+        self.typeInfo[name].controls.forEach(function(control) {
+          if(control.controlType === "relation") {
+            relationshipFields.push({ name: control.name, isSingle: control.meta.isSingle });
+          }
+        });
+      }
+
       if(self.typeInfo[name] && self.typeInfo[name].oneOff) {
+        tempData = adjustRelationshipFields(relationshipFields, tempData);
         data = tempData;
         return;
       }
@@ -238,6 +292,8 @@ module.exports.swigFunctions = function(swig) {
         if(value.name)  {
           value.slug = generateSlug(value); 
         }
+
+        value = adjustRelationshipFields(relationshipFields, value);
 
         return value;
       });
@@ -424,10 +480,17 @@ module.exports.swigFunctions = function(swig) {
   };
 
   this.getFunctions = function() {
-    return {
+    var functions = {
       get: getCombined,
-      getItem: getItem,
-      getItems: getItems,
+      getItem: function(holder) {
+        return holder;
+      },
+      _realGetItem: function(type, key) {
+        return getItem(type, key);
+      },
+      getItems: function(holder) {
+        return holder;
+      },
       getTypes: getTypes,
       paginate: paginate,
       getCurPage: getCurPage,
@@ -442,6 +505,33 @@ module.exports.swigFunctions = function(swig) {
       nextItem: nextItem,
       prevItem: prevItem
     };
+
+    var types = [];
+    for(var type in self.typeInfo) {
+      types.push(type);
+    }
+
+    var cms = {};
+
+    types.forEach(function(type) {
+
+      Object.defineProperty(cms, type, {
+        get: function() { return getCombined(type); },
+        enumerable: true,
+        configurable: true
+      })
+
+    });
+
+    functions['cms'] = cms;
+
+    Object.defineProperty(functions, 'cms_types', {
+      get: function() { return getTypes() },
+      enumerable: true,
+      configurable: true
+    })
+
+    return functions;
   };
 
 

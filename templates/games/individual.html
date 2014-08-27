@@ -42,8 +42,7 @@
 
   <div class="game-news">
     <div class="container">
-      {% set blog = getItems(item.blog) %}
-      {% set blog = blog|sort('publish_date', true)%}
+      {% set blog = cms.blog|sort('publish_date', true)%}
       {% if blog[0]%}
         <strong><span class="fa fa-star"></span> From the Supergiant blog:</strong> <a href="{{ url(blog[0]) }}">{{ blog[0].name }}</a>
       {% endif %}
@@ -82,10 +81,9 @@
           <a href="{{ item.ms_store }}" class="btn btn-ms fa fa-shopping-cart"> Xbox</a>
         {% endif %}
       </div>
-      {% set reviews = getItems(item.reviews) %}
       <div class="half game-info-reviews">
         <h2>What people are saying</h2>
-        {% for review in reviews %}
+        {% for review in item.reviews %}
           <span class="excerpt">{{ review.excerpt }}</span>
           <a href="{{ review.url }}" class="score" style="background: url({{ review.publication_logo.url }}) no-repeat center left">
             {{ review.publication }} - {{ review.score }} {{ review.rating_style }}
@@ -102,20 +100,18 @@
   {# RELATED SCREENS AND VIDEO #}
 
   <div class="media">
-    {% set gallery = getItem(item.gallery) %}
-    {% set videos = getItems(item.video) %}
 
     <p class="wy-text-center">
       Want a quick to-go bag of {{ item.name }} media, wallpapers, and logos? <a href="{{ item.press_kit.url }}">Download this handy zip file.</a>
     </p>
 
     <ul>
-      {% for video in videos %}
+      {% for video in item.videos %}
         <li>
         <a href="{{ video.video.url }}" class="media-video fa fa-youtube-play" style="background-image: url({{ video.video.thumbnail_url|imageSize(300) }})"> <span class="media-video-name">{{ video.name }}</span></a>
         </li>
       {% endfor %}
-      {% for image in gallery.gallery %}
+      {% for image in item.gallery.gallery %}
         <li><a href="{{ image.url }}"><img src="{{ image|imageSize(300) }}"></a></li>
       {% endfor %}
     </ul>
@@ -138,12 +134,10 @@
         <h2>Grab some gear</h2>
         <p>Purchase the {{ item.name }} soundtrack and other items from our store.</p>
 
-        {% set products = getItems(item.store) %}
-
         <hr>
 
         <ul>
-        {% for product in products %}
+        {% for product in item.store %}
           <li>
             <a href="{{ product.shopify.url }}">
               <img src="{{ product.shopify.thumbnail_url }}">
