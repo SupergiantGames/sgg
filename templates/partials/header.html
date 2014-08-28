@@ -3,21 +3,25 @@
 <nav>
   <div class="container">
     <a href="/" class="logo"><img src="/static/images/logo.png"/></a>
-    <ul>
-      <li class="mobile-menu"><a class="fa fa-bars first last"> Menu</a></li>
-      <li><a href="/" class="fa fa-star first last"></a></li>
-      {% for game in games %}
-        {% set game_url = url(game) %}
-        <li class="mobile-li"><a href="{{ url(game) }}" {% if current_url == game_url %} class="active"{% endif %}>{{ game.name }}</a></li>
-      {% endfor %}
-      <li class="moblie-li"><a href="/blog/" {% if current_url|startsWith('/blog/') %} class="active"{% endif %}>Blog</a></li>
-      <li class="mobile-li"><a href="/team/" {% if current_url|startsWith('/team/') %} class="active"{% endif %}>Team</a></li>
-      {% if jobs %}<li><a href="/jobs/" {% if current_url|startsWith('/jobs/') %} class="active"{% endif %}>Jobs</a></li>{% endif %}
-      <li class="mobile-li"><a href="/contact/" {% if current_url|startsWith('/contact/') %} class="active"{% endif %}>Contact</a></li>
-      <li class="mobile-li"><a href="http://store.supergiantgames.com">Store</a></li>
-      <li class="social"><a href="http://www.twitter.com/{{ social.twitter }}" class="fa fa-twitter first"></a></li>
-      <li class="social"><a href="http://www.facebook.com/{{ social.facebook }}" class="fa fa-facebook"></a></li>
-      <li class="social"><a href="http://www.youtube.com/user/{{ social.youtube }}" class="fa fa-youtube-play last"></a></li>
-    </ul>
+    <div class="nav-mobile fa fa-bars"> Supergiant menu</div>
+    <div class="nav-wrap">
+      <ul class="nav-left">
+        <li class="social"><a href="/" class="fa fa-star first last"></a></li>
+        {% for game in games %}
+          {% set game_url = url(game) %}
+          <li class="mobile-li"><a href="{{ url(game) }}" {% if current_url == game_url %} class="active"{% endif %}>{{ game.name }}</a></li>
+        {% endfor %}
+        <li class="moblie-li"><a href="/blog/" {% if current_url|startsWith('/blog/') %} class="active"{% endif %}>Blog</a></li>
+        <li class="mobile-li"><a href="/team/" {% if current_url|startsWith('/team/') %} class="active"{% endif %}>Team</a></li>
+        {% if jobs %}<li><a href="/jobs/" {% if current_url|startsWith('/jobs/') %} class="active"{% endif %}>Jobs</a></li>{% endif %}
+        <li class="mobile-li"><a href="/contact/" {% if current_url|startsWith('/contact/') %} class="active"{% endif %}>Contact</a></li>
+        <li class="mobile-li"><a href="http://store.supergiantgames.com">Store</a></li>
+      </ul>
+      <ul class="nav-right">
+        <li class="social"><a href="http://www.twitter.com/{{ social.twitter }}" class="fa fa-twitter first"></a></li>
+        <li class="social"><a href="http://www.facebook.com/{{ social.facebook }}" class="fa fa-facebook"></a></li>
+        <li class="social"><a href="http://www.youtube.com/user/{{ social.youtube }}" class="fa fa-youtube-play last"></a></li>
+      </ul>
+    </div>
   </div>
 </nav>

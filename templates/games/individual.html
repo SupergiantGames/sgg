@@ -59,7 +59,7 @@
   <div class="game-info">
     <div class="container">
       <div class="half game-info-text">
-        <img src="{{ item.box_art|imageSize(200) }}">
+        <img src="{{ item.box_art|imageSize(300) }}">
         {{ item.about|safe }}
         <p>Available now on
         {% for platform in item.platforms %}
@@ -82,6 +82,7 @@
         {% endif %}
       </div>
       <div class="half game-info-reviews">
+        {% if item.reviews %}
         <h2>What people are saying</h2>
         {% for review in item.reviews %}
           <span class="excerpt">{{ review.excerpt }}</span>
@@ -89,6 +90,7 @@
             {{ review.publication }} - {{ review.score }} {{ review.rating_style }}
           </a>
         {% endfor %}
+        {% endif %}
       </div>
     </div>
   </div>

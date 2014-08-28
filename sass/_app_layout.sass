@@ -255,12 +255,12 @@ nav
   height: 120px
   .container
     position: relative
-  ul
-    display: inline-block
+  .nav-wrap
     float: right
     background: $white
-    border-top: none
-
+  ul
+    display: block
+    float: left
   ul li
     display: block
     float: left
@@ -522,8 +522,14 @@ iframe #header.info
 
 
 
-.mobile-menu
+.nav-mobile
   display: none
+  background: $black
+  color: $text-invert
+  padding: $base-line-height
+  cursor: pointer
+  +font-smooth
+  font-weight: bold
 
 +media($tablet)
   .media li
@@ -565,20 +571,31 @@ iframe #header.info
       padding: 0
     .logo
       display: none
-    ul
+    .nav-wrap
       width: 100%
-    .social
+    .nav-right
       float: right
 
 +media($mobile)
   .body-title nav
     position: static
-  nav ul li
-    display: none
+  .nav-wrap
     width: 100%
+    height: 0
+    overflow: hidden
+    +transition(height .2s ease-in)
     a
       width: 100%
-  .mobile-menu
+  .nav-wrap.active
+    height: auto
+  .nav-wrap ul li.social
+    display: none
+  .nav-wrap li, .nav-wrap li a
+    display: block
+    width: 100%
+  .game-news, .page-title
+    display: none
+  .nav-mobile
     display: block
   .parallax
     display: none

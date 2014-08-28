@@ -6,7 +6,7 @@ $(document).ready(function() {
   });
   $("figure[data-type='video']").wrap("<div class='video-wrap'></div>");
 
-  $(document).on('click', '.mobile-menu', function(Event) {
-    $("nav ul li.mobile-li").toggle();
+  $(document).on('click', '.nav-mobile', function(Event) {
+    $(".nav-wrap").toggleClass("active");
   });
 });
