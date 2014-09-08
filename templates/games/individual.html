@@ -142,16 +142,16 @@
 
         <hr>
 
-        <ul>
-        {% for product in item.store %}
-          <li>
+        <div class="slide-store">
+        {% for product in item.store|sort('publish_date', true) %}
+          <div>
             <a href="{{ product.shopify.url }}">
               <img src="{{ product.shopify.thumbnail_url }}">
               {{ product.name  }}
             </a>
-          </li>
+          </div>
         {% endfor %}
-        </ul>
+        </div>
       </div>
     </div>
   </div>

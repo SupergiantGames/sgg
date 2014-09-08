@@ -116,6 +116,7 @@ html, body
   padding: $gutter * 2
   color: $white
   position: relative
+  +clearfix
 .store-line
   position: absolute
   width: 100%
@@ -139,17 +140,13 @@ html, body
     border-color: rgba(255,255,255,.2)
   p
     color: rgba(255,255,255,.5)
-  ul
-    +outer-container
-    li
-      +span-columns(4)
-      +omega(3n)
-      font-size: 80%
   img
     border: solid 10px $white
     margin-bottom: $gutter
   a
     color: $white
+    display: block
+    padding: 0 $base-line-height / 2
 .game-info
   padding: $gutter * 2
   p:last-child
@@ -597,10 +594,6 @@ iframe #header.info
   .media li
     +span-columns(4)
     +omega()
-  .store-items ul li
-    +span-columns(4)
-    +omega()
-    margin-bottom: $gutter
   .btn
     width: 100%
     margin-bottom: $base-line-height / 2
