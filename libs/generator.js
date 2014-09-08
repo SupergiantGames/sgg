@@ -109,6 +109,13 @@ module.exports.generator = function (config, logger, fileParser) {
     return self.root.child('management/sites/' + config.get('webhook').siteName + '/dns');
   };
 
+
+  var getTypeData = function(type, callback) {
+    getBucket().child('contentType').child(type).once('value', function(data) {
+      callback(data.val());
+    });
+  }
+
   /**
    * Retrieves snapshot of data from Firebase
    * @param  {Function}   callback   Callback function to run after data is retrieved, is sent the snapshot
@@ -197,6 +204,7 @@ module.exports.generator = function (config, logger, fileParser) {
    */
   var writeTemplate = function(inFile, outFile, params) {
     params = params || {};
+    params['firebase_conf'] = config.get('webhook');
     var originalOutFile = outFile;
 
     // Merge functions in
@@ -208,7 +216,7 @@ module.exports.generator = function (config, logger, fileParser) {
     swigFunctions.setParams({ CURRENT_URL: outputUrl });
 
     if(params.item) {
-      params.item = params._realGetItem(params.item._type, params.item._id);
+      params.item = params._realGetItem(params.item._type, params.item._id, true);
     }
 
     try {
@@ -301,6 +309,7 @@ module.exports.generator = function (config, logger, fileParser) {
         entry.entryName = newName;
       });
       zip.extractAllTo('.', true);
+
       fs.unlinkSync('.preset.zip');
       callback();
     });
@@ -375,6 +384,7 @@ module.exports.generator = function (config, logger, fileParser) {
       wrench.rmdirSyncRecursive('.static-old');
 
       fs.unlinkSync('.reset.zip');
+
       self.init(config.get('webhook').siteName, config.get('webhook').secretKey, true, config.get('webhook').firebase, function() {
         callback();
       });
@@ -467,6 +477,11 @@ module.exports.generator = function (config, logger, fileParser) {
         if(fs.existsSync('pages/robots.txt'))
         {
           fs.writeFileSync('./.build/robots.txt', fs.readFileSync('pages/robots.txt'));
+        }
+
+        if(fs.existsSync('./libs/.supported.js')) {
+          mkdirp.sync('./.build/.wh/_supported');
+          fs.writeFileSync('./.build/.wh/_supported/index.html', fs.readFileSync('./libs/.supported.js'));
         }
 
         logger.ok('Finished Rendering Pages\n');
@@ -565,18 +580,19 @@ module.exports.generator = function (config, logger, fileParser) {
               });
             }
 
+            if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.listUrl) {
+              var customPathParts = newPath.split('/');
+
+              customPathParts[2] = typeInfo[objectName].customUrls.listUrl;
+
+              newPath = customPathParts.join('/');
+            }
+
+            var origNewPath = newPath;
+
             // TODO, DETECT IF FILE ALREADY EXISTS, IF IT DOES APPEND A NUMBER TO IT DUMMY
             if(baseName === 'list')
             {
-
-              if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.listUrl) {
-                var customPathParts = newPath.split('/');
-
-                customPathParts[2] = typeInfo[objectName].customUrls.listUrl;
-
-                newPath = customPathParts.join('/');
-              }
-
               newPath = newPath + '/index.html';
               writeTemplate(file, newPath);
 
@@ -595,19 +611,31 @@ module.exports.generator = function (config, logger, fileParser) {
                   overrideFile = 'templates/' + objectName + '/layouts/' + val[templateWidgetName];
                 }
 
-                if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.individualUrl) {
-                  var customPathParts = baseNewPath.split('/');
-
-                  customPathParts[2] = utils.parseCustomUrl(typeInfo[objectName].customUrls.individualUrl, val);
-
-                  baseNewPath = customPathParts.join('/');
+                var addSlug = true;
+                if(val.slug) {
+                  baseNewPath = './.build/' + val.slug + '/';
+                  addSlug = false;
+                } else {
+                  if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.individualUrl) {
+                    baseNewPath = origNewPath + '/' + utils.parseCustomUrl(typeInfo[objectName].customUrls.individualUrl, val) + '/';
+                  } else {
+                    baseNewPath = origNewPath + '/';
+                  }                
                 }
 
-                var tmpSlug = generateSlug(val);
+                var tmpSlug = '';
+                if(!val.slug) {
+                  tmpSlug = generateSlug(val);
+                } else {
+                  tmpSlug = val.slug;
+                }
 
-                val.slug = tmpSlug;
-
-                newPath = baseNewPath + '/' + tmpSlug + '/index.html';
+                if(addSlug) {
+                  val.slug = baseNewPath.replace('./.build/', '') + tmpSlug;
+                  newPath = baseNewPath + '/' + tmpSlug + '/index.html';
+                } else {
+                  newPath = baseNewPath + '/index.html';
+                }
 
                 if(fs.existsSync(overrideFile)) {
                   writeTemplate(overrideFile, newPath, { item: val });
@@ -642,19 +670,32 @@ module.exports.generator = function (config, logger, fileParser) {
               {
                 var val = publishedItems[key];
 
-                if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.individualUrl) {
-                  var customPathParts = baseNewPath.split('/');
-
-                  customPathParts[2] = utils.parseCustomUrl(typeInfo[objectName].customUrls.individualUrl, val);
-
-                  baseNewPath = customPathParts.join('/');
+                var addSlug = true;
+                if(val.slug) {
+                  baseNewPath = './.build/' + val.slug;
+                  addSlug = false;
+                } else {
+                  if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.individualUrl) {
+                    baseNewPath = origNewPath + '/' + utils.parseCustomUrl(typeInfo[objectName].customUrls.individualUrl, val) + '/';
+                  }   else {
+                    baseNewPath = origNewPath + '/';
+                  }                  
                 }
 
-                var tmpSlug = generateSlug(val);
+                var tmpSlug = '';
+                if(!val.slug) {
+                  tmpSlug = generateSlug(val);
+                } else {
+                  tmpSlug = val.slug;
+                }
 
-                val.slug = tmpSlug;
+                if(addSlug) {
+                  val.slug = baseNewPath.replace('./.build/', '') + tmpSlug;
+                  newPath = baseNewPath + '/' + tmpSlug + '/' + middlePathName + '/index.html';
+                } else {
+                  newPath = baseNewPath + '/' + middlePathName + '/index.html';
+                }
 
-                newPath = baseNewPath + '/' + tmpSlug + '/' + middlePathName + '/index.html';
                 writeTemplate(file, newPath, { item: val });
               }
             }
@@ -949,11 +990,30 @@ module.exports.generator = function (config, logger, fileParser) {
         } else if (message === 'supported_messages') {
           sock.send('done:' + JSON.stringify([
             'scaffolding', 'scaffolding_force', 'check_scaffolding', 'reset_files', 'supported_messages',
-            'push', 'build', 'preset', 'layouts', 'preset_localv2', 'generate_slug'
+            'push', 'build', 'preset', 'layouts', 'preset_localv2', 'generate_slug_v2'
           ]));
-        } else if (message.indexOf('generate_slug:') === 0) {
-          var name = JSON.parse(message.replace('generate_slug:', ''));
-          sock.send('done:' + JSON.stringify(slug(name).toLowerCase()));
+        } else if (message.indexOf('generate_slug_v2:') === 0) {
+          var obj = JSON.parse(message.replace('generate_slug_v2:', ''));
+          var type = obj.type;
+          var name = obj.name;
+          var date = obj.date;
+
+          getTypeData(type, function(typeInfo) {
+            var tmpSlug = '';
+            tmpSlug = slug(name).toLowerCase();
+
+            if(typeInfo && typeInfo.customUrls && typeInfo.customUrls.individualUrl) {
+              tmpSlug = utils.parseCustomUrl(typeInfo.customUrls.individualUrl, date) + '/' + tmpSlug;
+            } 
+
+            if(typeInfo && typeInfo.customUrls && typeInfo.customUrls.listUrl) {
+              tmpSlug = typeInfo.customUrls.listUrl + '/' + tmpSlug;
+            } else {
+              tmpSlug = type + '/' + tmpSlug;
+            }
+              
+            sock.send('done:' + JSON.stringify(tmpSlug));
+          });
         } else if (message === 'push') {
           pushSite(function(error) {
             if(error) {

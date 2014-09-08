@@ -83,13 +83,17 @@
       </div>
       <div class="half game-info-reviews">
         {% if item.reviews %}
-        <h2>What people are saying</h2>
-        {% for review in item.reviews %}
-          <span class="excerpt">{{ review.excerpt }}</span>
-          <a href="{{ review.url }}" class="score" style="background: url({{ review.publication_logo.url }}) no-repeat center left">
-            {{ review.publication }} - {{ review.score }} {{ review.rating_style }}
-          </a>
-        {% endfor %}
+          <h2>What people are saying</h2>
+          <div class="slide-reviews">
+          {% for review in item.reviews %}
+            <div>
+              <span class="excerpt">{{ review.excerpt }}</span>
+              <a href="{{ review.url }}" class="score" style="background: url({{ review.publication_logo.url }}) no-repeat center left">
+                {{ review.publication }} - {{ review.score }} {{ review.rating_style }}
+              </a>
+            </div>
+          {% endfor %}
+          </div>
         {% endif %}
       </div>
     </div>

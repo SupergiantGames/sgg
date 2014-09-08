@@ -412,7 +412,6 @@ body.blog-individual
 footer
   background: $gray-darker
   padding: $base-line-height /2  0 $base-line-height 0
-  position: relative
   border-top: solid 10px $table-border-color
   position: absolute
   bottom: 0
@@ -509,14 +508,10 @@ figure[data-type="video"]
     border: solid 1px $table-border-color
 
 body.contact
-  .half
-    +span-columns(6)
-    +omega(2n)
-    margin-bottom: $gutter
   .half:last-child
     background: rgba(255,255,255,.8)
     padding: $gutter
-    padding-bottom: 0
+    margin-bottom: $gutter
 iframe #header.info
   display: none !important
 
