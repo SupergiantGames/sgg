@@ -12,17 +12,15 @@
 
     {% for object in data %}
       <div class="page-title">
-        <div class="gradient">
-          <div class="container">
-
-
-            <img src="{{ object.authors[0].image|imageCrop(75) }}">
+        <div class="container">
+          <img src="{{ object.authors[0].image|imageCrop(75) }}">
+          <div class="headline">
             <p>
             {% for game in object.games %}
               <a href="">{{ game.name }}</a>
             {% endfor %}
             </p>
-            <h1>{{ object.name }}</h1>
+            <a href="{{ url(object) }}"><h1>{{ object.name }}</h1></a>
             <p>
               By
               {% for author in object.authors %}

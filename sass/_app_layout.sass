@@ -60,6 +60,7 @@ html, body
     font-size: 250%
     font-weight: 300
     font-family: $base-font-family
+    line-height: 1.2
     +font-smooth
   p
     font-size: 90%
@@ -362,17 +363,12 @@ section.blog-list
       max-width: 125%
       margin-left: -10%
       margin-right: -10%
+  iframe
+    margin: auto
   .page-title
-    border: none
-    background: transparent
-    border-top: solid 20px $gray-darker
-    border-bottom: solid 1px $table-border-color
-    background: $white
-    img
-      background: $background-color
-      border: solid 1px $table-border-color
-    h1
-      color: $text-color
+    +clearfix
+    .headline
+      padding-left: 113px
 
 body.blog-individual
   article
@@ -595,6 +591,13 @@ iframe #header.info
       float: right
 
 +media($mobile)
+  section.blog-list
+    .container.article
+      figure[data-type="image"].wy-figure-large, .video-wrap
+        width: 100%
+        max-width: 100%
+        margin-left: 0
+        margin-right: 0
   .body-title nav
     position: static
   .nav-wrap
@@ -611,7 +614,9 @@ iframe #header.info
   .nav-wrap li, .nav-wrap li a
     display: block
     width: 100%
-  .game-news, .page-title
+  .game-news
+    display: none
+  .page-title img
     display: none
   .nav-mobile
     display: block
