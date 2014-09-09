@@ -19,6 +19,11 @@
 
 {% block content %}
 
+<div class="home-title">
+  <h1>{{ cms.studio.tagline_title }}</h1>
+  <h3>{{ cms.studio.tagline_body }}</h3>
+</div>
+
 {% set games = get('games') %}
 
 <ul>

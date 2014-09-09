@@ -112,20 +112,25 @@ html, body
   text-align: center
 
 .store
-  background: #3A7665
   padding: $gutter * 2
   color: $white
   position: relative
   +clearfix
-.store-line
-  position: absolute
-  width: 100%
-  height: 50%
-  top: 50%
-  left: 0
-  right: 0
-  background: rgba(0,0,0,.1)
-  z-index: 1
+// .store-line
+//   position: absolute
+//   width: 100%
+//   height: 50%
+//   top: 50%
+//   left: 0
+//   right: 0
+//   background: rgba(0,0,0,.1)
+//   z-index: 1
+.transistor .store
+  +linear-gradient(to bottom, #3A7665 25%, darken(#3A7665, 10%) 50%)
+
+.bastion .store
+  +linear-gradient(to bottom, #8D050B 25%, darken(#8D050B, 10%) 50%)
+
 .store-album
   +span-columns(5)
   z-index: 2
@@ -349,12 +354,25 @@ ul.blog-list
     font-weight: bold
     margin-bottom: 0
 
-body.blog-list
-  section
-    +span-columns(8)
-  aside
-    +span-columns(4)
-    +omega
+section.blog-list
+  .container.article
+    max-width: 600px
+    figure[data-type="image"].wy-figure-large, .video-wrap
+      width: 125%
+      max-width: 125%
+      margin-left: -10%
+      margin-right: -10%
+  .page-title
+    border: none
+    background: transparent
+    border-top: solid 20px $gray-darker
+    border-bottom: solid 1px $table-border-color
+    background: $white
+    img
+      background: $background-color
+      border: solid 1px $table-border-color
+    h1
+      color: $text-color
 
 body.blog-individual
   article
@@ -522,6 +540,14 @@ iframe #header.info
   cursor: pointer
   +font-smooth
   font-weight: bold
+
+.home-title
+  background: $gray-darker
+  color: $text-invert
+  text-align: center
+  padding: $gutter 0
+  h1, h3
+    font-family: $base-font-family
 
 +media($tablet)
   .media li

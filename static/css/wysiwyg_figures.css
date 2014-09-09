@@ -13,10 +13,6 @@ figcaption {
   line-height: 24px;
   font-size: 16px;
 }
-figcaption:empty:before {
-  opacity: 0.4;
-  content: "Type to add caption (optional)";
-}
 
 figure[data-type=table] {
   clear: both;
@@ -111,10 +107,6 @@ figure[data-type=quote] cite {
 }
 figure[data-type=quote] cite:before {
   content: "\2014\00a0";
-}
-figure[data-type=quote] cite:empty:before {
-  opacity: 0.4;
-  content: "\2014 Type to add citation (optional)";
 }
 
 .wy-figure-right {
