@@ -363,12 +363,21 @@ section.blog-list
       max-width: 125%
       margin-left: -10%
       margin-right: -10%
-  iframe
-    margin: auto
   .page-title
+    border: none
+    background: transparent
+    border-top: solid 20px $gray-darker
+    border-bottom: solid 1px $gray-lighter
+    background: $white
+    display: block
     +clearfix
     .headline
       padding-left: 113px
+    img
+      background: $background-color
+      border: solid 1px $table-border-color
+    h1
+      color: $text-color
 
 body.blog-individual
   article
@@ -591,7 +600,18 @@ iframe #header.info
       float: right
 
 +media($mobile)
+  body.blog-individual
+    .page-title .next, .page-title .prev
+      display: none
+    aside, section
+      display: none
+    article
+      border: none
+      padding: 0
+      +span-columns(4)
   section.blog-list
+    .page-title .headline
+      padding-left: 0
     .container.article
       figure[data-type="image"].wy-figure-large, .video-wrap
         width: 100%
