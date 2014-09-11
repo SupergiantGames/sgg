@@ -575,14 +575,18 @@ iframe #header.info
 .home-games li
   padding: $gutter * 2
   color: $text-invert
-  border-top: solid 30px $black
   background-size: cover
   min-height: 500px
+  box-shadow: inset 5px 20px 20px rgba(0,0,0,.5)
+  h2
+    font-size: 200%
   &.transistor
+    border-top: solid 5px $background-color
     img
       float: left
       margin-right: $gutter * 2
   &.bastion
+    border-top: solid 1px $gray-darker
     img
       float: right
       margin-left: $gutter * 2
@@ -593,7 +597,7 @@ iframe #header.info
 .home-store
   text-align: center
   padding: $gutter * 2 0
-  +linear-gradient(to bottom, #8D050B 25%, darken(#8D050B, 10%) 50%)
+  +linear-gradient(to bottom, #3A7665 25%, darken(#3A7665, 10%) 50%)
   h2
     color: $white
   hr
