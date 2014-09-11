@@ -604,6 +604,8 @@ iframe #header.info
   text-align: center
   padding: $gutter * 2 0
   +linear-gradient(to bottom, #3A7665 25%, darken(#3A7665, 10%) 50%)
+  a
+    color: $white
   h2
     color: $white
   hr
@@ -643,6 +645,12 @@ iframe #header.info
 
 
 +media($tablet)
+  .home-blog li
+    +span-columns(4)
+    +omega(2n)
+    margin-bottom: $gutter
+    &:last-child
+      display: none
   .media li
     +span-columns(4)
     +omega(2n)
@@ -688,6 +696,16 @@ iframe #header.info
       float: right
 
 +media($mobile)
+  .home-blog li
+    +span-columns(4)
+    +omega
+    margin-bottom: $gutter
+  .home-games li
+    padding: $gutter 0
+    img
+      float: left
+      width: 100%
+      margin-bottom: $gutter
   body.blog-individual
     .page-title .next, .page-title .prev
       display: none
