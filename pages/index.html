@@ -19,5 +19,38 @@
 
 {% block content %}
 
+<div class="blowout">
+  {{ cms.studio.tagline_title }}
+</div>
+
+<div class="container">
+  <ul>
+    {% for game in cms.games %}
+    <li>
+      <a href="{{ url(game) }}">
+        {{ game.name }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+
+<div class="home-store">
+  <div class="container">
+    <h2>Grab some gear</h2>
+    <p><a href="http://store.supergiantgames.com">International shipping available. Check out our store.</a></p>
+    <hr>
+    <div class="home-store-items">
+      {% for product in cms.store|sort('publish_date', true) %}
+        <div>
+          <a href="{{ product.shopify.url }}">
+            <img src="{{ product.shopify.thumbnail_url }}">
+            {{ product.name  }}
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
 
 {% endblock %}

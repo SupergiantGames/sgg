@@ -375,20 +375,20 @@ section.blog-list
         &.author
           color: $text-color
       .image
-        width: 124px
+        width: 100px
         display: block
         margin: auto
-        padding: $base-line-height / 2
-        background: darken(#F2EFEC, 10%)
+        padding-bottom: $base-line-height / 4
+        background: $link-color
         position: relative
         margin-bottom: $base-line-height
         &:after
           display: block
           content: " "
           position: absolute
-          left: 50px
+          left: 38px
           bottom: -10px
-          +triangle(24px, darken(#F2EFEC, 10%), down)
+          +triangle(24px, $link-color, down)
   .page-title
     border: none
     background: transparent
@@ -578,6 +578,26 @@ iframe #header.info
   padding: $gutter 0
   h1, h3
     font-family: $base-font-family
+
+.blowout
+  background: url(http://subtlepatterns.com/patterns/dark_geometric.png)
+  height: 300px
+
+.home-store
+  text-align: center
+
+.home-store-items
+  a
+    text-align: center
+    font-size: 90%
+    color: $link-color
+    display: block
+    padding: 0 $base-line-height / 2
+  img
+    padding: $base-line-height / 2
+    background: $white
+    margin-bottom: $base-line-height / 2
+
 
 +media($tablet)
   .media li
