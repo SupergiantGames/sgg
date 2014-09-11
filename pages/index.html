@@ -17,9 +17,11 @@
 {# This sets our page <title>. It will append "- Homepage" to the site title defined in base. #}
 {% block title %}{% parent %} - Homepage{% endblock %}
 
+{% block body_class %}{{ item.name|lower }}{% endblock %}
+
 {% block content %}
 
-  <h1>{{ cms.studio.tagline_title }}</h1>
+<div class="home-title"><h1>{{ cms.studio.tagline_title }}</h1></div>
 
 <ul class="home-games">
   {% for game in cms.games %}
@@ -28,7 +30,15 @@
       <img src="{{ game.box_art|imageSize(390) }}">
       <h2>{{ game.name }}</h2>
       {{ game.about|safe }}
-      <hr>
+      <hr style="border-color: {{ game.primary_color }}">
+      <p>
+        Buy it now for
+        {% for platform in game.platforms %}
+          {% if platform.value %}
+            {{ platform.label }}
+          {% endif %}
+        {% endfor%}
+      </p>
       {% if game.steam %}
         <a href="{{ game.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
       {% endif %}

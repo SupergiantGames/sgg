@@ -572,19 +572,19 @@ iframe #header.info
   font-weight: bold
 
 .home-title
-  background: $gray-darker
-  color: $text-invert
+  background: $white
   text-align: center
   padding: $gutter 0
   h1, h3
     font-family: $base-font-family
+    margin-bottom: 0
 
 .home-games li
   padding: $gutter * 2
   color: $text-invert
   border-top: solid 30px $black
   background-size: cover
-  height: 500px
+  min-height: 500px
   &.transistor
     img
       float: left
@@ -595,8 +595,11 @@ iframe #header.info
       margin-left: $gutter * 2
   .text
     padding-left: 300px
+  hr
+    border-width: 5px
 .home-store
   text-align: center
+  margin-top: $gutter * 2
 
 .home-store-items
   a
