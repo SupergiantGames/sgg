@@ -60,6 +60,7 @@
     <div class="container">
       <div class="half game-info-text">
         <img src="{{ item.box_art|imageSize(300) }}">
+        <h2>About the game</h2>
         {{ item.about|safe }}
         <p>Available now on
         {% for platform in item.platforms %}

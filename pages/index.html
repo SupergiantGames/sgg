@@ -19,21 +19,19 @@
 
 {% block content %}
 
-<div class="blowout">
-  {{ cms.studio.tagline_title }}
-</div>
+  <h1>{{ cms.studio.tagline_title }}</h1>
 
-<div class="container">
-  <ul>
-    {% for game in cms.games %}
-    <li>
-      <a href="{{ url(game) }}">
-        {{ game.name }}
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
+<ul class="home-games">
+  {% for game in cms.games %}
+  <li class="{{ game.name }}" style="background-image:url({{ game.home_art.url }});">
+    <div class="container">
+      <img src="{{ game.box_art|imageSize(300) }}">
+      <h2>{{ game.name }}</h2>
+      {{ game.about|safe }}
+    </div>
+  </li>
+  {% endfor %}
+</ul>
 
 <div class="home-store">
   <div class="container">
