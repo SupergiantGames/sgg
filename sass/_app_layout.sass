@@ -573,11 +573,13 @@ iframe #header.info
 
 .home-title
   background: $white
-  text-align: center
   padding: $gutter 0
+  border-top: solid 1px $table-border-color
   h1, h3
     font-family: $base-font-family
-    margin-bottom: 0
+    text-align: center
+  .tagline
+    text-align: center
 
 .home-games li
   padding: $gutter * 2
@@ -612,6 +614,22 @@ iframe #header.info
     padding: $base-line-height / 2
     background: $white
     margin-bottom: $base-line-height / 2
+
+.home-blog
+  li
+    +span-columns(4)
+    +omega(3n)
+  .image
+    padding-bottom: 56.9%
+    background-size: cover
+    background: no-repeat center center fixed
+    margin-bottom: $base-line-height / 2
+  .title
+    font-weight: bold
+    margin-bottom: $base-line-height / 2
+    color: $text-color
+  .body
+    color: $gray-light
 
 
 +media($tablet)
