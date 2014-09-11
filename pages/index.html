@@ -23,11 +23,24 @@
 
 <ul class="home-games">
   {% for game in cms.games %}
-  <li class="{{ game.name }}" style="background-image:url({{ game.home_art.url }});">
+  <li class="{{ game.name|lower }}" style="background-image:url({{ game.home_art.url }});">
     <div class="container">
-      <img src="{{ game.box_art|imageSize(300) }}">
+      <img src="{{ game.box_art|imageSize(390) }}">
       <h2>{{ game.name }}</h2>
       {{ game.about|safe }}
+      <hr>
+      {% if game.steam %}
+        <a href="{{ game.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
+      {% endif %}
+      {% if game.amazon %}
+      <a href="{{ game.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
+      {% endif %}
+      {% if game.ps_store %}
+        <a href="{{ game.ps_store }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
+      {% endif %}
+      {% if game.ms_store %}
+        <a href="{{ game.ms_store }}" class="btn btn-ms fa fa-shopping-cart"> Xbox</a>
+      {% endif %}
     </div>
   </li>
   {% endfor %}
