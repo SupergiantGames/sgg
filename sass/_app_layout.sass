@@ -357,25 +357,50 @@ ul.blog-list
 
 section.blog-list
   .container.article
-    max-width: 600px
-    figure[data-type="image"].wy-figure-large, .video-wrap
-      width: 125%
-      max-width: 125%
-      margin-left: -10%
-      margin-right: -10%
+    article
+      padding-left: $gutter
+      border-left: solid 1px $table-border-color
+      margin-bottom: $gutter
+      +span-columns(8)
+      +omega
+    p, li
+      font-size: 18px
+      line-height: 1.5
+    aside
+      +span-columns(4)
+      text-align: center
+      p
+        margin-bottom: $base-line-height / 4
+        font-size: 90%
+        &.author
+          color: $text-color
+      .image
+        width: 124px
+        display: block
+        margin: auto
+        padding: $base-line-height / 2
+        background: darken(#F2EFEC, 10%)
+        position: relative
+        margin-bottom: $base-line-height
+        &:after
+          display: block
+          content: " "
+          position: absolute
+          left: 50px
+          bottom: -10px
+          +triangle(24px, darken(#F2EFEC, 10%), down)
   .page-title
     border: none
     background: transparent
-    border-top: solid 20px $gray-darker
     border-bottom: solid 1px $gray-lighter
+    border-top: solid 1px $gray-lighter
     background: $white
     display: block
     +clearfix
     .headline
       padding-left: 113px
-    img
-      background: $background-color
-      border: solid 1px $table-border-color
+    a
+      color: $link-color
     h1
       color: $text-color
 
@@ -610,14 +635,13 @@ iframe #header.info
       padding: 0
       +span-columns(4)
   section.blog-list
-    .page-title .headline
-      padding-left: 0
     .container.article
-      figure[data-type="image"].wy-figure-large, .video-wrap
-        width: 100%
-        max-width: 100%
-        margin-left: 0
-        margin-right: 0
+      article
+        +span-columns(4)
+        border-left: none
+        padding-left: 0
+      aside
+        display: none
   .body-title nav
     position: static
   .nav-wrap

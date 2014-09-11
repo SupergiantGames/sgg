@@ -6,32 +6,29 @@
 {% block content %}
   {% set data = cms.blog|sort('publish_date', true) %}
 
-  {% set data = paginate(data, 10) %}
+  {% set data = paginate(data, 5) %}
 
     <section class="blog-list">
 
     {% for object in data %}
       <div class="page-title">
         <div class="container">
-          <img src="{{ object.authors[0].image|imageCrop(75) }}">
-          <div class="headline">
             <p>
-            {% for game in object.games %}
-              <a href="">{{ game.name }}</a>
-            {% endfor %}
-            </p>
-            <a href="{{ url(object) }}"><h1>{{ object.name }}</h1></a>
-            <p>
-              By
-              {% for author in object.authors %}
-                <span class="author">{{ author.name }}</span>{% if not loop.last %},{% endif %}
-              {% endfor %}
               {{ object.publish_date|date('F d Y') }}
             </p>
-          </div>
+            <a href="{{ url(object) }}"><h1>{{ object.name }}</h1></a>
         </div>
       </div>
       <div class="container article">
+        <aside>
+          <div class="image"><img src="{{ object.authors[0].image|imageCrop(100) }}"></div>
+          <a href="http://www.twitter.com/{{ object.authors[0].twitter }}">
+              {% for author in object.authors %}
+                <p class="author">{{ author.name }}</p>
+                <p class="twitter">@{{ author.twitter }}</p>
+              {% endfor %}
+            </a>
+        </aside>
         <article>{{ object.body|safe }}</article>
       </div>
     {% endfor %}
