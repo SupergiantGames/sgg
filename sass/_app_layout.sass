@@ -117,15 +117,6 @@ html, body
   color: $white
   position: relative
   +clearfix
-// .store-line
-//   position: absolute
-//   width: 100%
-//   height: 50%
-//   top: 50%
-//   left: 0
-//   right: 0
-//   background: rgba(0,0,0,.1)
-//   z-index: 1
 .transistor .store
   +linear-gradient(to bottom, #3A7665 25%, darken(#3A7665, 10%) 50%)
 
@@ -601,13 +592,19 @@ iframe #header.info
     border-width: 5px
 .home-store
   text-align: center
-  margin-top: $gutter * 2
+  padding: $gutter * 2 0
+  +linear-gradient(to bottom, #8D050B 25%, darken(#8D050B, 10%) 50%)
+  h2
+    color: $white
+  hr
+    border-color: rgba(255,255,255,.2)
+
 
 .home-store-items
   a
     text-align: center
     font-size: 90%
-    color: $link-color
+    color: $white
     display: block
     padding: 0 $base-line-height / 2
   img
@@ -616,6 +613,7 @@ iframe #header.info
     margin-bottom: $base-line-height / 2
 
 .home-blog
+  +outer-container
   li
     +span-columns(4)
     +omega(3n)
@@ -630,6 +628,8 @@ iframe #header.info
     color: $text-color
   .body
     color: $gray-light
+    font-size: 90%
+    margin-bottom: 0
 
 
 +media($tablet)

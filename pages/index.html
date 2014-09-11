@@ -23,20 +23,22 @@
 
 <div class="home-title">
   <div class="container">
-  <h1>{{ cms.studio.tagline_title }}</h1>
-  <p class="tagline">{{ cms.studio.tagline_body }}</p>
-  <hr>
-  <ul class="home-blog">
-  {% for blog in cms.blog|sort('publish_date', true)|slice(0,3) %}
-    <li>
-      <a href="{{ url(blog) }}">
-        <div class="image" style="background:url({{ blog.image|imageSize(500) }});"></div>
-        <p class="title">{{ blog.name }}</p>
-        <p class="body">{{ blog.body|striptags|truncate(100) }}</p>
-      </a>
-    </li>
-  {% endfor %}
-  </ul>
+    <h1>{{ cms.studio.tagline_title }}</h1>
+    <p class="tagline">{{ cms.studio.tagline_body }}</p>
+    <hr>
+    <ul class="home-blog">
+    {% for blog in cms.blog|sort('publish_date', true)|slice(0,3) %}
+      <li>
+        <a href="{{ url(blog) }}">
+          <div class="image" style="background:url({{ blog.image|imageSize(500) }});"></div>
+          <p class="title">{{ blog.name }}</p>
+          <p class="body">{{ blog.body|striptags|truncate(200) }}</p>
+        </a>
+      </li>
+    {% endfor %}
+    </ul>
+    <hr>
+    <p>Keep up to date and join our mailing list.</p>
   </div>
 </div>
 
