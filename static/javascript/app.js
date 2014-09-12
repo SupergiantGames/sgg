@@ -52,7 +52,8 @@ $(document).ready(function() {
   });
   $('.home-store-items').slick({
     infinite: true,
-    arrows: true,
+    arrows: false,
+    dots: true,
     slidesToShow: 5,
     slidesToScroll: 5,
       responsive: [

@@ -86,15 +86,15 @@
 
 <div class="home-store">
   <div class="container">
-    <h2>Grab some gear</h2>
-    <p><a href="http://store.supergiantgames.com">International shipping available. Check out our store.</a></p>
-    <hr>
+    <img src="/static/images/transistor/muse.png" class="muse">
+    <h2>The Supergiant store</h2>
+    <p>International shipping available. Check out our store.</p>
     <div class="home-store-items">
       {% for product in cms.store|sort('publish_date', true) %}
         <div>
           <a href="{{ product.shopify.url }}">
             <img src="{{ product.shopify.thumbnail_url }}">
-            {{ product.name  }}
+            <span>{{ product.name  }}</span>
           </a>
         </div>
       {% endfor %}

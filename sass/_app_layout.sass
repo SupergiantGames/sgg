@@ -606,18 +606,30 @@ iframe #header.info
   hr
     border-width: 5px
 .home-store
-  text-align: center
-  padding: $gutter * 2 0
+  padding-top: $gutter * 2
   +linear-gradient(to bottom, #3A7665 25%, darken(#3A7665, 10%) 50%)
+  position: relative
+  .container
+    padding-bottom: $gutter
+  img.muse
+    position: absolute
+    right: 0
+    bottom: 0
+  p
+    color: darken(#3A7665, 15%)
   a
     color: $white
   h2
-    color: $white
+    color: darken(#3A7665, 20%)
+    font-size: 200%
+    margin-bottom: $base-line-height / 2
   hr
     border-color: rgba(255,255,255,.2)
 
 
 .home-store-items
+  margin-left: -$base-line-height / 2
+  margin-right: -$base-line-height / 2
   a
     text-align: center
     font-size: 90%
@@ -625,10 +637,15 @@ iframe #header.info
     display: block
     padding: 0 $base-line-height / 2
   img
-    padding: $base-line-height / 2
+    padding: $base-line-height / 4
     background: $white
-    margin-bottom: $base-line-height / 2
-
+  span
+    background: $white
+    display: block
+    padding: $base-line-height / 4
+    color: $gray
+    white-space: pre
+    overflow: hidden
 .home-blog
   +outer-container
   li
