@@ -36,7 +36,7 @@
         </a>
       </li>
     {% endfor %}
-    </ul>
+    </ul>$black
     <hr>
     <p>Keep up to date and join our mailing list.</p>
   </div>
@@ -46,9 +46,13 @@
   {% for game in cms.games %}
   <li class="{{ game.name|lower }}" style="background-image:url({{ game.home_art.url }});">
     <div class="container">
+      <a href="{{ url(game) }}">
       <img src="{{ game.box_art|imageSize(390) }}">
+      </a>
+      <a href="{{ url(game) }}" class="text">
       <h2>{{ game.name }}</h2>
       {{ game.about|safe }}
+      </a>
       <hr style="border-color: {{ game.primary_color }}">
       <p>
         Buy it now for
