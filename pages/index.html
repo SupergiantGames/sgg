@@ -38,13 +38,18 @@
     {% endfor %}
     </ul>$black
     <hr>
-    <p>Keep up to date and join our mailing list.</p>
+    <div class="home-newsletter">
+      <img src="/static/images/transistor/shielder.png" class="float-right">
+      <label>Keep up to date and join our mailing list.</label>
+      <input type="text" placeholder="your@email.com">
+      <a href="" class="btn btn-small btn-neutral fa fa-envelope"> Notify me</a>
+    </div>
   </div>
 </div>
 
 <ul class="home-games">
   {% for game in cms.games %}
-  <li class="{{ game.name|lower }}" style="background:url({{ game.home_art.url }});">
+  <li class="{{ game.name|lower }}" style="background-image:url({{ game.home_art.url }});">
     <div class="container">
       <a href="{{ url(game) }}">
       <img src="{{ game.box_art|imageSize(390) }}">
