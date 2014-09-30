@@ -1,5 +1,5 @@
 
-var curVersion = 'v42';
+var curVersion = 'v43';
 
 var request = require('request');
 
@@ -136,3 +136,5 @@ module.exports = function(grunt) {
   });
 
 };
+
+module.exports.version = curVersion;
