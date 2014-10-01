@@ -52,16 +52,15 @@
       {{ game.about|safe }}
       </a>
       <hr style="border-color: {{ game.primary_color }}">
-      <p>
-        Buy it now for
-        {% for platform in game.platforms %}
-          {% if platform.value %}
-            {{ platform.label }}
-          {% endif %}
-        {% endfor%}
-      </p>
+      <h3>Buy it now</h3>
       {% if game.steam %}
         <a href="{{ game.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
+      {% endif %}
+      {% if game.mac_app_store %}
+        <a href="{{ game.steam }}" class="btn btn-neutral fa fa-apple"> Mac</a>
+      {% endif %}
+      {% if game.mac_app_store %}
+        <a href="{{ game.steam }}" class="btn btn-neutral fa fa-apple"> iOS</a>
       {% endif %}
       {% if game.amazon %}
       <a href="{{ game.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>

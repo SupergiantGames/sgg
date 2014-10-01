@@ -89,9 +89,26 @@
           <a href="{{ url(game) }}">
             <img src="{{ game.box_art|imageSize(400) }}">
           </a>
-          <a href="{{ game.steam.url }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
-          <a href="{{ game.amazon.url }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
-          <a href="{{ game.ps_store.url }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
+
+          {% if game.steam %}
+            <a href="{{ game.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
+          {% endif %}
+          {% if game.mac_app_store %}
+            <a href="{{ game.steam }}" class="btn btn-neutral fa fa-apple"> Mac</a>
+          {% endif %}
+          {% if game.mac_app_store %}
+            <a href="{{ game.steam }}" class="btn btn-neutral fa fa-apple"> iOS</a>
+          {% endif %}
+          {% if game.amazon %}
+          <a href="{{ game.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
+          {% endif %}
+          {% if game.ps_store %}
+            <a href="{{ game.ps_store }}" class="btn btn-ps fa fa-shopping-cart"> Playstation</a>
+          {% endif %}
+          {% if game.ms_store %}
+            <a href="{{ game.ms_store }}" class="btn btn-ms fa fa-shopping-cart"> Xbox</a>
+          {% endif %}
+
 
           <hr>
           {% set products = getItems(game.store ) %}
