@@ -45,23 +45,6 @@
   </div>
   <div class="content">
     <div class="container">
-      <aside>
-        <ul class="social-list">
-          <li><a href="" class="fa fa-twitter"> Twitter</a></li>
-          <li><a href="" class="fa fa-facebook"> Facebook</a></li>
-          <li><a href="" class="fa fa-envelope"> Email</a></li>
-          <li><a href="" class="fa fa-reddit"> Reddit</a></li>
-        </ul>
-        <div class="mailing-list">
-          <div class="wy-control-group">
-            <label>Join our mailing list</label>
-            <div class="wy-control">
-              <input type="email" placeholder="your@email.com">
-            </div>
-          </div>
-        </div>
-      </aside>
-      <article class="video">
         {% set videos = getItems(item.video) %}
 
 
@@ -77,7 +60,6 @@
 
         {{ item.body|safe }}
 
-      </article>
     </div>
   </div>
 {% endblock %}
