@@ -44,8 +44,8 @@
   {% for game in cms.games %}
   <li class="{{ game.name|lower }}" style="background-image:url({{ game.home_art.url }});">
     <div class="container">
-      <a href="{{ url(game) }}">
-      <img src="{{ game.box_art|imageSize(390) }}">
+      <a href="{{ url(game) }}" class="box">
+        <img src="{{ game.box_art|imageSize(390) }}">
       </a>
       <a href="{{ url(game) }}" class="text">
       <h2>{{ game.name }}</h2>
