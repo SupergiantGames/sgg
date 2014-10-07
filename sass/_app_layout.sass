@@ -181,10 +181,14 @@ html, body
       left: 0px
   .game-info-reviews
     padding: $gutter
+    padding-bottom: 0
     h2
       text-align: center
       font-family: $base-font-family
       font-weight: 300
+    .slide-reviews > div:last-child
+      padding-bottom: $base-line-height / 2
+
   .score
     font-weight: bold
     display: block
@@ -589,6 +593,10 @@ iframe #header.info
     box-shadow: 0px 5px 10px rgba(0,0,0,.5)
   a.text
     color: $text-invert
+    p
+      margin-bottom: 0
+      font-size: 125%
+      line-height: 1.5
   h2
     font-size: 200%
   p:last-child

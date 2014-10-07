@@ -50,8 +50,8 @@
         <img src="{{ game.box_art|imageSize(390) }}">
       </a>
       <a href="{{ url(game) }}" class="text">
-      <h2>{{ game.name }}</h2>
-      {{ game.about|safe }}
+        <h2>{{ game.name }}</h2>
+        <p>{{ game.about|safe }}</p>
       </a>
       <hr style="border-color: {{ game.primary_color }}">
       <h3>Available on</h3>
