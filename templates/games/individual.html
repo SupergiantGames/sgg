@@ -62,7 +62,9 @@
         <img src="{{ item.box_art|imageSize(300) }}">
         <h2>About the game</h2>
         {{ item.about|safe }}
-        <p><a href="{{ url(item.faq) }}" class="fa fa-book"> Read the full FAQ</a></p>
+        {% if item.faq %}
+          <p><a href="{{ url(item.faq) }}" class="fa fa-book"> Read the full FAQ</a></p>
+        {% endif %}
         <hr>
         <h3>Buy it now</h3>
         {% if item.steam %}
@@ -91,9 +93,11 @@
           <div class="slide-reviews">
           {% for review in item.reviews %}
             <div>
-              <span class="excerpt">{{ review.excerpt }}</span>
-              <a href="{{ review.url }}" class="score" style="background: url({{ review.publication_logo.url }}) no-repeat center left">
-                {{ review.publication }} - {{ review.score }} {{ review.rating_style }}
+              <a href="{{ review.url }}">
+                <span class="excerpt">{{ review.excerpt }}</span>
+                <span class="score" style="background: url({{ review.publication_logo.url }}) no-repeat center left">
+                  {{ review.publication }} - {{ review.score }} {{ review.rating_style }}
+                </span>
               </a>
             </div>
           {% endfor %}
