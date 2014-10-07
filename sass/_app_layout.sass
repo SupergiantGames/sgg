@@ -569,9 +569,11 @@ iframe #header.info
   background: $white
   padding: $gutter 0
   border-top: solid 1px $table-border-color
-  h1, h3
+  h1, h2, h3
     font-family: $base-font-family
     text-align: center
+  h2
+    margin-bottom: 0
   .tagline
     text-align: center
 
@@ -616,11 +618,13 @@ iframe #header.info
     right: 0
     bottom: 0
   p
-    color: darken(#3A7665, 15%)
+    color: $white
+    z-index: 2
+    position: relative
   a
     color: $white
   h2
-    color: darken(#3A7665, 20%)
+    color: $white
     font-size: 200%
     margin-bottom: $base-line-height / 2
   hr
@@ -671,8 +675,6 @@ iframe #header.info
     .box img
       float: right
       width: 30%
-      margin-left: $base-line-height
-      margin-bottom: $base-line-height
   .home-blog li
     +span-columns(4)
     +omega(2n)

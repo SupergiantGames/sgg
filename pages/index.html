@@ -37,8 +37,10 @@
       </li>
     {% endfor %}
     </ul>
+    <h2 class="wy-text-center">Our games</h2>
   </div>
 </div>
+
 
 <ul class="home-games">
   {% for game in cms.games %}
@@ -52,7 +54,7 @@
       {{ game.about|safe }}
       </a>
       <hr style="border-color: {{ game.primary_color }}">
-      <h3>Buy it now</h3>
+      <h3>Available on</h3>
       {% if game.steam %}
         <a href="{{ game.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
       {% endif %}
@@ -79,8 +81,8 @@
 <div class="home-store">
   <div class="container">
     <img src="/static/images/transistor/muse.png" class="muse">
-    <h2>The Supergiant store</h2>
-    <p>International shipping available. Check out our store.</p>
+    <h2>Shop at Our Online Store</h2>
+    <p>International shipping available. We fulfill all online orders straight from our San Francisco studio.</p>
     <div class="home-store-items">
       {% for product in cms.store|sort('publish_date', true) %}
         <div>
