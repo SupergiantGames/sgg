@@ -62,6 +62,8 @@
         <img src="{{ item.box_art|imageSize(300) }}">
         <h2>About the game</h2>
         {{ item.about|safe }}
+        <p><a href="{{ url(item.faq) }}" class="fa fa-book"> Read the full FAQ</a></p>
+        <hr>
         <h3>Buy it now</h3>
         {% if item.steam %}
           <a href="{{ item.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
