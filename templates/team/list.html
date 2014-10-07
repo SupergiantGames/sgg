@@ -15,7 +15,7 @@
 
   <div class="container">
     <ul class="team-list">
-      {% for member in team|where('hide_from_team_page', 'No') %}
+      {% for member in team|where('hide_from_team_page', 'No')|sort('sort') %}
         <li>
           <div class="head">
             <img src="{{ member.image|imageCrop(100) }}">
