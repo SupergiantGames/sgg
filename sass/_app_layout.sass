@@ -3,7 +3,7 @@ html, body
 .body-wrap
   position: relative
   min-height: 100%
-  padding-bottom: 100px
+  padding-bottom: 159px
 
 .body-title nav
   position: absolute
@@ -457,19 +457,12 @@ body.blog-individual
 
 footer
   background: $gray-darker
-  padding: $base-line-height /2  0 $base-line-height 0
+  padding: $base-line-height /2  0 0 0
   border-top: solid 10px $table-border-color
   position: absolute
   bottom: 0
   left: 0
   width: 100%
-  &:before
-    content: " "
-    position: absolute
-    bottom: 0
-    height: 30%
-    width: 100%
-    background: rgba(0,0,0,.2)
   .logo
     width: 100px
     display: inline-block
@@ -487,6 +480,15 @@ footer
     a.fa
       padding: $base-line-height / 4
       color: $white
+  .newsletter
+    background: rgba(0,0,0,.2)
+    padding: $base-line-height 0
+    .text
+      color: $gray-light
+      font-size: 90%
+    .newsletter
+      background: $gray-darker
+      padding: $base-line-height 0
 
 figure[data-type="embed"]
   text-align: center
