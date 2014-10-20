@@ -282,14 +282,14 @@ nav
     &.fa.last
       padding-right: $base-line-height / 2
     &.active
-      color: #CA0000 !important
       font-weight: bold
+      text-decoration: underline
     &.game
       font-weight: bold
     &:visited
       color: $gray
     &:hover
-      color: #CA0000
+      text-decoration: underline
   .logo
     display: inline-block
     position: absolute
@@ -421,6 +421,7 @@ body.blog-individual
   section
     +span-columns(3)
     +omega()
+    margin-bottom: $base-line-height
     img, .btn
       width: 100%
       margin-bottom: $base-line-height / 4
