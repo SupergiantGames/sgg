@@ -1,5 +1,5 @@
 
-var curVersion = 'v43';
+var curVersion = 'v44';
 
 var request = require('request');
 
@@ -33,7 +33,13 @@ module.exports = function(grunt) {
     }
   };
 
-  var generator = require('../libs/generator').generator(grunt.config, grunt.log, grunt.file, root);
+  var npmBin = grunt.option('npmbin');
+  var nodeBin = grunt.option('nodebin');
+  var gruntBin = grunt.option('gruntbin');
+  var token = grunt.option('token');
+  var email = grunt.option('token');
+
+  var generator = require('../libs/generator').generator(grunt.config, { npm: npmBin, node: nodeBin, grunt: gruntBin, token: token, email: email }, grunt.log, grunt.file, root);
 
   grunt.registerTask('buildTemplates', 'Generate static files from templates directory', function() {
     var done = this.async();
