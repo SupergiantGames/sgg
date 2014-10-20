@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+
+
+<rss version="2.0">
+  <channel>
+    <title>Supergiant Games Blog</title>
+    <link>http://www.supergiantgames.com/blog/</link>
+    <description>Official Web site for the creators of Bastion and Transistor.</description>
+      {% for object in cms.blog|sort('publish_date', true)|slice(0,10) %}
+      <item>
+        <title>{{ object.name }}</title>
+        <link>{{ getSetting('site_url') }}{{ url(object) }}</link>
+        <description>
+          {{ object.body|safe }}
+        </description>
+        <pubDate>{{ object.publish_date }}</pubDate>
+      </item>
+    {% endfor %}
+  </channel>
+</rss>
+
+
