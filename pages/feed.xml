@@ -11,7 +11,7 @@
         <title>{{ object.name }}</title>
         <link>{{ getSetting('site_url') }}{{ url(object) }}</link>
         <description>
-          {{ object.body|safe }}
+          {{ object.body|safe|escape }}
         </description>
         <pubDate>{{ object.publish_date }}</pubDate>
       </item>
