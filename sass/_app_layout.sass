@@ -623,20 +623,30 @@ iframe #header.info
   position: relative
   .container
     padding-bottom: $gutter
-  img.muse
+  img.red
     position: absolute
-    right: 0
-    bottom: 0
+    left: -200px
+    bottom: -20px
+    background: transparent
+  img.kid
+    position: absolute
+    right: -200px
+    bottom: -20px
+    background: transparent
   p
     color: $white
-    z-index: 2
+    z-index: 10
     position: relative
+    text-align: center
   a
     color: $white
   h2
     color: $white
     font-size: 200%
     margin-bottom: $base-line-height / 2
+    position: relative
+    z-index: 10
+    text-align: center
   hr
     border-color: rgba(255,255,255,.2)
 
@@ -681,6 +691,9 @@ iframe #header.info
 
 
 +media($tablet)
+  .home-store
+    img.kid, img.red
+      display: none
   .home-games
     .box img
       float: right

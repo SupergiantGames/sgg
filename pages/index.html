@@ -80,10 +80,11 @@
 
 <div class="home-store">
   <div class="container">
-    <img src="/static/images/transistor/muse.png" class="muse">
     <h2>Shop at Our Online Store</h2>
     <p>International shipping available. We fulfill all online orders straight from our San Francisco studio.</p>
     <div class="home-store-items">
+      <img src="/static/images/transistor/cartoon_red.png" class="red">
+      <img src="/static/images/bastion/cartoon_kid.png" class="kid">
       {% for product in cms.store|sort('publish_date', true) %}
         <div>
           <a href="{{ product.shopify.url }}">
