@@ -9,7 +9,7 @@
         <li class="social"><a href="/" class="fa fa-star first last"></a></li>
         {% for game in games %}
           {% set game_url = url(game) %}
-          <li class="mobile-li"><a href="{{ url(game) }}" {% if current_url == game_url %} class="active"{% endif %}>{{ game.name }}</a></li>
+          <li class="mobile-li"><a href="{{ url(game) }}" class="game {% if current_url == game_url %}active{% endif %}" style="color: {{ game.primary_color }}">{{ game.name }}</a></li>
         {% endfor %}
         <li class="moblie-li"><a href="/blog/" {% if current_url|startsWith('/blog/') %} class="active"{% endif %}>Blog</a></li>
         <li class="mobile-li"><a href="/team/" {% if current_url|startsWith('/team/') %} class="active"{% endif %}>Team</a></li>
