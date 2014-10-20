@@ -94,10 +94,10 @@
             <a href="{{ game.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
           {% endif %}
           {% if game.mac_app_store %}
-            <a href="{{ game.steam }}" class="btn btn-neutral fa fa-apple"> Mac</a>
+            <a href="{{ game.mac_app_store }}" class="btn btn-neutral fa fa-apple"> Mac</a>
           {% endif %}
-          {% if game.mac_app_store %}
-            <a href="{{ game.steam }}" class="btn btn-neutral fa fa-apple"> iOS</a>
+          {% if game.ios_store %}
+            <a href="{{ game.ios_store }}" class="btn btn-neutral fa fa-apple"> iOS</a>
           {% endif %}
           {% if game.amazon %}
           <a href="{{ game.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
