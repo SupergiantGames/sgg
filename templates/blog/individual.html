@@ -66,7 +66,7 @@
         </div>
       </aside>
       <article>
-        {{ item.body|safe }}
+        {{ item.body|replace('http://lh(\d).ggpht', 'https://lh$1.ggpht', 'g')|safe }}
         {# Relations require some special code. More info about relations here: #}
         {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
         {% for relation in getItems(item.video) %}

@@ -35,7 +35,7 @@
                 {{ object.video[0].video.html|safe }}
               </figure>
             {% endif %}
-            {{ object.body|safe }}
+            {{ object.body|replace('http://lh(\d).ggpht', 'https://lh$1.ggpht', 'g')|safe }}
           </article>
       </div>
     {% endfor %}
