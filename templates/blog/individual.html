@@ -58,7 +58,7 @@
           <div class="wy-control-group">
             <label>Join our mailing list</label>
             <div class="wy-control">
-              <form method="post" action="http://ymlp.com/subscribe.php?id=gmqyyuhgmgh">
+              <form method="post" action="https://ymlp.com/subscribe.php?id=gmqyyuhgmgh">
               <input name ="YMP0" type="text" placeholder="your@email.com">
               </form>
             </div>
@@ -66,7 +66,7 @@
         </div>
       </aside>
       <article>
-        {{ item.body|safe }}
+        {{ item.body|replace('http://lh(\d).ggpht', 'https://lh$1.ggpht', 'g')|safe }}
         {# Relations require some special code. More info about relations here: #}
         {# http://www.webhook.com/docs/template-rules-and-filters/#getitem #}
         {% for relation in getItems(item.video) %}

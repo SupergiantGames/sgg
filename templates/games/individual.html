@@ -122,7 +122,7 @@
     <ul>
       {% for video in item.video %}
         <li>
-        <a href="{{ video.video.url }}" class="media-video fa fa-youtube-play" style="background-image: url({{ video.video.thumbnail_url|imageSize(300) }})"> <span class="media-video-name">{{ video.name }}</span></a>
+        <a href="{{ video.video.url }}" class="media-video fa fa-youtube-play" style="background-image: url({{ video.video.thumbnail_url|replace('http://i.ytimg.com', 'https://i.ytimg.com') }})"> <span class="media-video-name">{{ video.name }}</span></a>
         </li>
       {% endfor %}
       {% for image in item.gallery.gallery %}

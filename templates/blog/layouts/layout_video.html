@@ -58,7 +58,7 @@
 
         <hr>
 
-        {{ item.body|safe }}
+        {{ item.body|replace('http://lh(\d).ggpht', 'https://lh$1.ggpht', 'g')|safe }}
 
     </div>
   </div>
