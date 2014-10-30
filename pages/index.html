@@ -85,7 +85,7 @@
     <div class="home-store-items">
       <img src="/static/images/transistor/cartoon_red.png" class="red">
       <img src="/static/images/bastion/cartoon_kid.png" class="kid">
-      {% for product in cms.store|sort('publish_date', true) %}
+      {% for product in cms.store|sort('sort') %}
         <div>
           <a href="{{ product.shopify.url }}">
             <img src="{{ product.shopify.thumbnail_url }}">

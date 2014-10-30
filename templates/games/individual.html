@@ -151,7 +151,7 @@
         <hr>
 
         <div class="slide-store">
-        {% for product in item.store|sort('publish_date', true) %}
+        {% for product in item.store|sort('sort') %}
           <div>
             <a href="{{ product.shopify.url }}">
               <img src="{{ product.shopify.thumbnail_url }}">

@@ -114,7 +114,7 @@
           <hr>
           {% set products = getItems(game.store ) %}
 
-          {% for product in products|slice(0,1) %}
+          {% for product in products|sort('sort')|slice(0,1) %}
             <a href="{{ product.shopify.url }}" class="store-promo">
               <span>In our store</span>
               <img src="{{ product.shopify.thumbnail_url }}">
