@@ -35,27 +35,42 @@
       {{ item.instructions|safe }}
     </div>
     <div class="half">
-      <div id="wufoo-r1volg9c1qbi23b">
-      Fill out my <a href="https://enemykite.wufoo.com/forms/r1volg9c1qbi23b">online form</a>.
+      <div class="wy-alert wy-alert-danger">
+        <div class="wy-alert-title">Please check your form</div>
+        <p>Some sort of thing happened.</p>
       </div>
-      <script type="text/javascript">var r1volg9c1qbi23b;(function(d, t) {
-      var s = d.createElement(t), options = {
-      'userName':'enemykite',
-      'formHash':'r1volg9c1qbi23b',
-      'autoResize':true,
-      'height':'517',
-      'async':true,
-      'host':'wufoo.com',
-      'header':'hide',
-      'ssl':true};
-      s.src = ('https:' == d.location.protocol ? 'https://' : 'http://') + 'www.wufoo.com/scripts/embed/form.js';
-      s.onload = s.onreadystatechange = function() {
-      var rs = this.readyState; if (rs) if (rs != 'complete') if (rs != 'loaded') return;
-      try { r1volg9c1qbi23b = new WufooForm();r1volg9c1qbi23b.initialize(options);r1volg9c1qbi23b.display(); } catch (e) {}};
-      var scr = d.getElementsByTagName(t)[0], par = scr.parentNode; par.insertBefore(s, scr);
-      })(document, 'script');</script>
+      <div class="wy-alert wy-alert-success">
+        <div class="wy-alert-title">Message sent</div>
+        <p>Thank you for contacting us. We'll get back to you shortly.</p>
+      </div>
+      <form class="wy-form">
+        <div class="wy-control-group fluid-input">
+          <label>Name</label>
+          <div class="wy-control">
+            <input type="text">
+          </div>
+        </div>
+        <div class="wy-control-group fluid-input">
+          <label>Email</label>
+          <div class="wy-control">
+            <input type="email">
+          </div>
+        </div>
+        <div class="wy-control-group fluid-input">
+          <label>Subject</label>
+          <div class="wy-control">
+            <input type="text">
+          </div>
+        </div>
+        <div class="wy-control-group">
+          <label>Message</label>
+          <div class="wy-control">
+            <textarea style="min-height: 200px"></textarea>
+          </div>
+        </div>
+        <input type="submit" class="btn btn-neutral" value="Send">
+      </form>
     </div>
-
   </div>
 {% endblock %}
 
