@@ -56,11 +56,11 @@ var grooveOnLoad = function () {
   });
 };
 
-// var grooveid = 'supergiantgames';
-// var groovekey = '7e4e369e-536d-4b5d-87ef-9e9ef9827870';
+var grooveid = 'supergiantgames';
+var groovekey = '7e4e369e-536d-4b5d-87ef-9e9ef9827870';
 
-var grooveid = 'gpbmike';
-var groovekey = '5234a268-4b6f-4d2a-b701-ecd332d644f9';
+// var grooveid = 'gpbmike';
+// var groovekey = '5234a268-4b6f-4d2a-b701-ecd332d644f9';
 
 (function() {var s=document.createElement('script'); s.type='text/javascript';s.async=true;
 s.src=('https:'==document.location.protocol?'https':'http') + '://' + grooveid + '.groovehq.com/widgets/' + groovekey + '/ticket/api.js';
