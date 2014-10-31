@@ -29,43 +29,38 @@
     </div>
   </div>
 
-
   <div class="container">
     <div class="half">
       {{ item.instructions|safe }}
     </div>
     <div class="half">
-      <div class="wy-alert wy-alert-danger">
-        <div class="wy-alert-title">Please check your form</div>
-        <p>Some sort of thing happened.</p>
-      </div>
-      <div class="wy-alert wy-alert-success">
+      <div class="wy-alert wy-alert-success groove-alert" style="display:none">
         <div class="wy-alert-title">Message sent</div>
         <p>Thank you for contacting us. We'll get back to you shortly.</p>
       </div>
-      <form class="wy-form">
-        <div class="wy-control-group fluid-input">
-          <label>Name</label>
+      <form class="wy-form groove">
+        <div class="wy-control-group fluid-input groove-enduser_name">
+          <label>Name *</label>
           <div class="wy-control">
-            <input type="text">
+            <input type="text" name="name">
           </div>
         </div>
-        <div class="wy-control-group fluid-input">
-          <label>Email</label>
+        <div class="wy-control-group fluid-input groove-enduser_email">
+          <label>Email *</label>
           <div class="wy-control">
-            <input type="email">
+            <input type="email" name="email">
           </div>
         </div>
-        <div class="wy-control-group fluid-input">
-          <label>Subject</label>
+        <div class="wy-control-group fluid-input groove-title">
+          <label>Subject *</label>
           <div class="wy-control">
-            <input type="text">
+            <input type="text" name="subject">
           </div>
         </div>
-        <div class="wy-control-group">
-          <label>Message</label>
+        <div class="wy-control-group groove-comments">
+          <label>Message *</label>
           <div class="wy-control">
-            <textarea style="min-height: 200px"></textarea>
+            <textarea style="min-height: 200px" name="message"></textarea>
           </div>
         </div>
         <input type="submit" class="btn btn-neutral" value="Send">
@@ -74,6 +69,4 @@
   </div>
 {% endblock %}
 
-
-
-
+{% block js_extra %}<script src="/static/javascript/groove.js"></script>{% endblock %}
