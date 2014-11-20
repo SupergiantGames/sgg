@@ -10,7 +10,8 @@
       <li><a href="/team/" {% if current_url|startsWith('/team/') %} class="active"{% endif %}>Team</a></li>
       <li><a href="/contact/" {% if current_url|startsWith('/contact/') %} class="active"{% endif %}>Contact</a></li>
       <li><a href="https://store.supergiantgames.com">Store</a></li>
-      <li><a href="http://www.twitter.com/{{ social.twitter }}" class="fa fa-twitter first"></a></li>
+      <li><a href="/feed.xml" class="fa fa-rss first"></a></li>
+      <li><a href="http://www.twitter.com/{{ social.twitter }}" class="fa fa-twitter"></a></li>
       <li><a href="http://www.facebook.com/{{ social.facebook }}" class="fa fa-facebook"></a></li>
       <li><a href="http://www.youtube.com/user/{{ social.youtube }}" class="fa fa-youtube-play last"></a></li>
     </ul>
