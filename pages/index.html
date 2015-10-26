@@ -47,7 +47,7 @@
   <li class="{{ game.name|lower }}" style="background-image:url({{ game.home_art.url }});">
     <div class="container">
       <a href="{{ url(game) }}" class="box">
-        <img src="{{ game.box_art|imageSize(390) }}">
+        <img src="{{ game.box_art|imageSize(390) }}" class="poster">
       </a>
       <a href="{{ url(game) }}" class="text">
         <h2>{{ game.name }}</h2>
@@ -56,22 +56,22 @@
       <hr style="border-color: {{ game.primary_color }}">
       <h3>Available on</h3>
       {% if game.steam %}
-        <a href="{{ game.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
+        <a href="{{ game.steam }}"><img src="/static/images/btn_steam.png"/></a>
       {% endif %}
       {% if game.mac_app_store %}
-        <a href="{{ game.mac_app_store }}" class="btn btn-neutral fa fa-apple"> Mac</a>
+        <a href="{{ game.mac_app_store }}"><img src="/static/images/btn_mac.png"/></a>
       {% endif %}
       {% if game.ios_store %}
-        <a href="{{ game.ios_store }}" class="btn btn-neutral fa fa-apple"> iOS</a>
+        <a href="{{ game.ios_store }}"><img src="/static/images/btn_app.png"/></a>
       {% endif %}
       {% if game.amazon %}
-      <a href="{{ game.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
+      <a href="{{ game.amazon }}"> <img src="/static/images/btn_.png"/></a>
       {% endif %}
       {% if game.ps_store %}
-        <a href="{{ game.ps_store }}" class="btn btn-ps fa fa-shopping-cart"> PS4</a>
+        <a href="{{ game.ps_store }}"><img src="/static/images/btn_ps.png"/></a>
       {% endif %}
       {% if game.ms_store %}
-        <a href="{{ game.ms_store }}" class="btn btn-ms fa fa-shopping-cart"> X360</a>
+        <a href="{{ game.ms_store }}"><img src="/static/images/btn_xbox.png"/></a>
       {% endif %}
     </div>
   </li>
