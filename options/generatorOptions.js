@@ -20,6 +20,12 @@ module.exports = function(grunt) {
   
   var port = grunt.option('port') || '2002';
 
+
+  livereloadPort = 35730;
+  if(port !== '2002') {
+    livereloadPort = port + 1;
+  }
+
   var mergeConfig = {
     webhook: conf,
 
@@ -35,20 +41,19 @@ module.exports = function(grunt) {
           port: port * 1,
           hostname: '*',
           base: '.build',
-          livereload: 35730,
-          middleware: function(connect, options) {
+          livereload: livereloadPort,
+          middleware: function(connect, options, middlewares) {
             // Return array of whatever middlewares you want
-            return [
-              header({ 'X-Webhook-Local' : true }),
-              connect.static(options.base),
-              require('grunt-connect-proxy/lib/utils').proxyRequest,
-              function(req, res, next) {
-                if ('GET' != req.method && 'HEAD' != req.method) return next();
+            middlewares.unshift(header({ 'X-Webhook-Local' : true }));
+            middlewares.push(require('grunt-connect-proxy/lib/utils').proxyRequest);
+            middlewares.push(function(req, res, next) {
+              if ('GET' != req.method && 'HEAD' != req.method) return next();
 
-                var contents = fs.readFileSync('./libs/debug404.html');
-                res.end(contents);
-              },
-            ];
+              var contents = fs.readFileSync('./libs/debug404.html');
+              res.end(contents);
+            });
+            
+            return middlewares;
           }
         },
         proxies: [
@@ -66,8 +71,12 @@ module.exports = function(grunt) {
     },
 
     watch: {
+      'wh-watch-static': {
+        files: ['static/**/*'],
+        tasks: ['build-static']
+      },
       'wh-watch': {
-        files: ['pages/**/*', 'templates/**/*', 'static/**/*'],
+        files: ['pages/**/*', 'templates/**/*'],
         tasks: ['build']
       }
     },

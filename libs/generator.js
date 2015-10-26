@@ -11,12 +11,14 @@ var tinylr = require('tiny-lr');
 var _ = require('lodash');
 var wrench = require('wrench');
 var utils = require('./utils.js');
-var ws = require('ws').Server;
+var websocketServer = require('nodejs-websocket');
 var Zip   = require('adm-zip');
 var slug = require('uslug');
 var async = require('async');
 var spawn = require('win-spawn');
 var md5 = require('MD5');
+var $ = require('cheerio');
+var exec = require('child_process').exec;
 
 require('colors');
 
@@ -52,6 +54,11 @@ var wrap = function()
          'var window = null;' +
          'var process = null;' +
          'var eval = null;' +
+         'var require = null;' +
+         'var __filename = null;' +
+         'var __dirname = null;' +
+         'var modules = null;' +
+         'var exports = null;' +
          last;
 
   args.push(last);
@@ -64,6 +71,8 @@ Function = wrap;
 // Disable console log in various things
 //console.log = function () {};
 
+var cmsSocketPort = 6557;
+
 /**
  * Generator that handles various commands
  * @param  {Object}   config     Configuration options from .firebase.conf
@@ -73,8 +82,14 @@ module.exports.generator = function (config, options, logger, fileParser) {
   var self = this;
   var firebaseUrl = config.get('webhook').firebase || 'webhook';
   var liveReloadPort = config.get('connect')['wh-server'].options.livereload;
+
+  if(liveReloadPort !== 35730) {
+    cmsSocketPort = liveReloadPort + 1; 
+  }
+
   var websocket = null;
   var strictMode = false;
+  var productionFlag = false;
 
   this.versionString = null;
   this.cachedData = null;
@@ -128,6 +143,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
       swigFunctions.setSettings(self.cachedData.settings);
       swigFilters.setSiteDns(self.cachedData.siteDns);
       swigFilters.setFirebaseConf(config.get('webhook'));
+      swigFilters.setTypeInfo(self.cachedData.typeInfo);
 
       callback(self.cachedData.data, self.cachedData.typeInfo);
       return;
@@ -173,6 +189,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
       swigFunctions.setData(data);
       swigFunctions.setTypeInfo(typeInfo);
       swigFunctions.setSettings(settings);
+      swigFilters.setTypeInfo(typeInfo);
 
       getDnsChild().once('value', function(snap) {
         var siteDns = snap.val() || config.get('webhook').siteName + '.webhook.org';
@@ -197,6 +214,96 @@ module.exports.generator = function (config, options, logger, fileParser) {
     });
   };
 
+  var searchEntryStream = null;
+
+  this.openSearchEntryStream = function(callback) {
+    if(config.get('webhook').noSearch === true) {
+      callback();
+      return;
+    }
+
+    if(!fs.existsSync('./.build/.wh/')) {
+      mkdirp.sync('./.build/.wh/');
+    }
+
+    searchEntryStream = fs.createWriteStream('./.build/.wh/searchjson.js');
+
+    searchEntryStream.write('var tipuesearch = {"pages": [\n');
+
+    callback();
+  };
+
+
+  this.closeSearchEntryStream = function(callback) {
+    if(config.get('webhook').noSearch === true || !searchEntryStream) {
+      callback();
+      return;
+    }
+
+    searchEntryStream.end(']}');
+
+    searchEntryStream.on('close', function() {
+      callback();
+    });
+  };
+
+  var writeSearchEntry = function(outFile, output) {
+    if(config.get('webhook').noSearch === true || !searchEntryStream) {
+      return;
+    }
+
+    var endUrl = outFile.replace('./.build', '');
+
+    if(path.extname(endUrl) !== '.html' || endUrl === '/404.html' || endUrl.indexOf('/_wh_previews') === 0) {
+      return;
+    }
+
+    endUrl = endUrl.replace('index.html', '');
+
+    var content = $.load(output);
+
+    var title = content('title').text();
+    var bodyObj = content('body');
+
+    if(bodyObj.attr('data-search-index') === "false") {
+      return;
+    }
+
+    var specialChild = bodyObj.find('[data-search-index="true"]');
+
+    if(specialChild.length > 0) {
+      bodyObj = specialChild.first();
+    }
+
+    bodyObj.find('script').remove();
+    bodyObj.find('iframe').remove();
+    bodyObj.find('object').remove();
+    bodyObj.find('[data-search-index="false"]').remove();
+
+    var body = bodyObj.text().trim();
+    var tags = "";
+
+    if(content('meta[name="keywords"]').length > 0) {
+      tags = content('meta[name="keywords"]').attr('content');
+    }
+
+    if(searchEntryStream) {
+      var searchObj = {
+        title: title,
+        text: body,
+        tags: tags,
+        loc: endUrl
+      };
+
+      searchEntryStream.write(JSON.stringify(searchObj) + ',\n');
+
+      searchObj = null;
+    }
+
+    title = '';
+    body = '';
+  };
+
   /**
    * Writes an instance of a template to the build directory
    * @param  {string}   inFile     Template to read
@@ -211,6 +318,8 @@ module.exports.generator = function (config, options, logger, fileParser) {
     // Merge functions in
     params = utils.extend(params, swigFunctions.getFunctions());
 
+    params.cmsSocketPort = cmsSocketPort;
+
     swigFunctions.init();
 
     var outputUrl = outFile.replace('index.html', '').replace('./.build', '');
@@ -219,6 +328,8 @@ module.exports.generator = function (config, options, logger, fileParser) {
     if(params.item) {
       params.item = params._realGetItem(params.item._type, params.item._id, true);
     }
+
+    params.production = productionFlag;
 
     var output = '';
     try {
@@ -241,6 +352,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
     mkdirp.sync(path.dirname(outFile));
     fs.writeFileSync(outFile, output);
+    writeSearchEntry(outFile, output);
 
     // Haha this crazy nonsense is to handle pagination, the swig function "paginate" makes
     // shouldPaginate return true if there are more pages left, so we enter a while loop to
@@ -273,6 +385,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
       mkdirp.sync(path.dirname(outFile));
       fs.writeFileSync(outFile, output);
+      writeSearchEntry(outFile, output);
 
       swigFunctions.increasePage();
     }
@@ -312,11 +425,32 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
       var entries = zip.getEntries();
 
+      if(fs.existsSync('package.json')) {
+        fs.renameSync('package.json', 'old.package.json');
+      }
+
       entries.forEach(function(entry) {
         var newName = entry.entryName.split('/').slice(1).join('/');
         entry.entryName = newName;
       });
       zip.extractAllTo('.', true);
+
+      if(fs.existsSync('old.package.json') && fs.existsSync('package.json')) {
+        var packageJson = JSON.parse(fs.readFileSync('package.json'));
+        var oldPackageJson = JSON.parse(fs.readFileSync('old.package.json'));
+
+        var depends = packageJson.dependencies;
+        var oldDepends = oldPackageJson.dependencies;
+
+        _.assign(depends, oldDepends);
+
+        packageJson.dependencies = depends;
+
+        fs.writeFileSync('package.json', JSON.stringify(packageJson, null, "  "));
+        fs.unlinkSync('old.package.json');
+      } else if(fs.existsSync('old.package.json')) {
+        fs.renameSync('old.package.json', 'package.json');
+      }
 
       fs.unlinkSync('.preset.zip');
       callback();
@@ -352,49 +486,59 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
       var entries = zip.getEntries();
 
-      try {
-        fs.renameSync('pages', '.pages-old');
-      } catch(error) {
-        fs.unlinkSync('.reset.zip');
-        callback(true);
-        return;
-      }
+      removeDirectory('.pages-old', function() {
+        removeDirectory('.templates-old', function() {
+          removeDirectory('.static-old', function() {
 
-      try {
-        fs.renameSync('templates', '.templates-old');
-      } catch(error) {
-        fs.renameSync('.pages-old', 'pages');
-        fs.unlinkSync('.reset.zip');
-        callback(true);
-        return;
-      }
+            try {
+              fs.renameSync('pages', '.pages-old');
+            } catch(error) {
+              fs.unlinkSync('.reset.zip');
+              callback(true);
+              return;
+            }
 
-      try {
-        fs.renameSync('static', '.static-old');
-      } catch(error) {
-        fs.renameSync('.pages-old', 'pages');
-        fs.renameSync('.templates-old', 'templates');
-        fs.unlinkSync('.reset.zip');
-        callback(true);
-        return;
-      }
+            try {
+              fs.renameSync('templates', '.templates-old');
+            } catch(error) {
+              fs.renameSync('.pages-old', 'pages');
+              fs.unlinkSync('.reset.zip');
+              callback(true);
+              return;
+            }
 
-      entries.forEach(function(entry) {
-        if(entry.entryName.indexOf('pages/') === 0
-           || entry.entryName.indexOf('templates/') === 0
-           || entry.entryName.indexOf('static/') === 0) {
-          zip.extractEntryTo(entry.entryName, '.', true, true);
-        }
-      });
+            try {
+              fs.renameSync('static', '.static-old');
+            } catch(error) {
+              fs.renameSync('.pages-old', 'pages');
+              fs.renameSync('.templates-old', 'templates');
+              fs.unlinkSync('.reset.zip');
+              callback(true);
+              return;
+            }
 
-      wrench.rmdirSyncRecursive('.pages-old');
-      wrench.rmdirSyncRecursive('.templates-old');
-      wrench.rmdirSyncRecursive('.static-old');
+            entries.forEach(function(entry) {
+              if(entry.entryName.indexOf('pages/') === 0
+                 || entry.entryName.indexOf('templates/') === 0
+                 || entry.entryName.indexOf('static/') === 0) {
+                zip.extractEntryTo(entry.entryName, '.', true, true);
+              }
+            });
 
-      fs.unlinkSync('.reset.zip');
+            removeDirectory('.pages-old', function() {
+              removeDirectory('.templates-old', function() {
+                removeDirectory('.static-old', function() {
+                  fs.unlinkSync('.reset.zip');
 
-      self.init(config.get('webhook').siteName, config.get('webhook').secretKey, true, config.get('webhook').firebase, function() {
-        callback();
+                  self.init(config.get('webhook').siteName, config.get('webhook').secretKey, true, config.get('webhook').firebase, function() {
+                    callback();
+                  });
+                });
+              });
+            });
+
+          });
+        });
       });
     });
   };
@@ -412,11 +556,32 @@ module.exports.generator = function (config, options, logger, fileParser) {
 
     var entries = zip.getEntries();
 
+    if(fs.existsSync('package.json')) {
+      fs.renameSync('package.json', 'old.package.json');
+    }
+
     entries.forEach(function(entry) {
       var newName = entry.entryName.split('/').slice(1).join('/');
       entry.entryName = newName;
     });
     zip.extractAllTo('.', true);
+
+    if(fs.existsSync('old.package.json') && fs.existsSync('package.json')) {
+      var packageJson = JSON.parse(fs.readFileSync('package.json'));
+      var oldPackageJson = JSON.parse(fs.readFileSync('old.package.json'));
+
+      var depends = packageJson.dependencies;
+      var oldDepends = oldPackageJson.dependencies;
+
+      _.assign(depends, oldDepends);
+
+      packageJson.dependencies = depends;
+
+      fs.writeFileSync('package.json', JSON.stringify(packageJson, null, "  "));
+      fs.unlinkSync('old.package.json');
+    } else if(fs.existsSync('old.package.json')) {
+      fs.renameSync('old.package.json', 'package.json');
+    }
 
     fs.unlinkSync('.preset.zip');
 
@@ -477,10 +642,13 @@ module.exports.generator = function (config, options, logger, fileParser) {
           var filename = path.basename(newFile, path.extname(file));
           var extension = path.extname(file);
 
-
-          if(path.extname(file) === '.html' && filename !== 'index' && path.basename(newFile) !== '404.html') {
+          if(path.extname(file) === '.html' && filename !== 'index' && path.basename(newFile) !== '404.html' && file.indexOf('.raw.html') === -1) {
             dir = dir + '/' + filename;
             filename = 'index';
+          }
+
+          if(filename.indexOf('.raw') !== -1 && filename.indexOf('.raw') === (filename.length - 4) && extension === '.html') {
+            filename = filename.slice(0, filename.length - 4);
           }
 
           newFile = dir + '/' + filename + path.extname(file);
@@ -594,10 +762,18 @@ module.exports.generator = function (config, options, logger, fileParser) {
               });
             }
 
+            var listPath = null;
+
             if(typeInfo[objectName] && typeInfo[objectName].customUrls && typeInfo[objectName].customUrls.listUrl) {
               var customPathParts = newPath.split('/');
 
-              customPathParts[2] = typeInfo[objectName].customUrls.listUrl;
+              if(typeInfo[objectName].customUrls.listUrl === '#') // Special remove syntax
+              {
+                listPath = customPathParts.join('/');
+                customPathParts.splice(2, 1);
+              } else {
+                customPathParts[2] = typeInfo[objectName].customUrls.listUrl;
+              }
 
               newPath = customPathParts.join('/');
             }
@@ -608,6 +784,11 @@ module.exports.generator = function (config, options, logger, fileParser) {
             if(baseName === 'list')
             {
               newPath = newPath + '/index.html';
+
+              if(listPath) {
+                newPath = listPath + '/index.html';
+              }
+
               writeTemplate(file, newPath);
 
             } else if (baseName === 'individual') {
@@ -739,6 +920,57 @@ module.exports.generator = function (config, options, logger, fileParser) {
     callback();
   };
 
+  var removeDirectory = function(directory, callback) {
+    var isWin = /^win/.test(process.platform);
+
+    if(isWin) {
+      exec('rmdir /s /q ' + directory, function(err) {
+
+        if(err) {
+          if(fs.existsSync(directory)) {
+            wrench.rmdirSyncRecursive(directory);
+          }
+        }
+        callback();
+      });
+    } else {
+      if(fs.existsSync(directory)) {
+        wrench.rmdirSyncRecursive(directory);
+      }
+
+      callback();
+    }
+  }
+
+  self.staticHashs = false;
+  self.changedStaticFiles = [];
+
+  /**
+  * This creates a hash table of all the static files, used to send detailed information to livereload
+  * We only do this for static files for speed, for regular files a full reload usually is ok.
+  */
+  var createStaticHashs = function() {
+    self.staticHashs = {};
+    self.changedStaticFiles = [];
+
+    if(fs.existsSync('.build/static')) {
+      var files = wrench.readdirSyncRecursive('.build/static');
+
+      files.forEach(function(file) {
+        var file = '.build/static/' + file;
+
+        if(!fs.lstatSync(file).isDirectory()) {
+          var hash = md5(fs.readFileSync(file));
+
+          self.staticHashs[file] = hash;
+        }
+      })
+    } else {
+      self.staticHashs = false;
+      self.changedStaticFiles = [];
+    }
+  };
+
   /**
    * Cleans the build directory
    * @param  {Function}   done     Callback passed either a true value to indicate its done, or an error
@@ -747,13 +979,41 @@ module.exports.generator = function (config, options, logger, fileParser) {
   this.cleanFiles = function(done, cb) {
       logger.ok('Cleaning files');
 
-      if(fs.existsSync('.build'))
-      {
-        wrench.rmdirSyncRecursive('.build');
-      }
+      removeDirectory('.build', function() {
+        if (cb) cb();
+        if (done) done(true);
+      });
+  };
 
-      if (cb) cb();
-      if (done) done(true);
+  var buildQueue = async.queue(function (task, callback) {
+    if(task.type === 'static') {
+
+      // For static builds we create a hash table to send correct livereload info
+      // We only do this for static files for speed, normal builds dont really matter
+      createStaticHashs();
+
+      removeDirectory('.build/static', function() {
+        self.copyStatic(function() {
+          self.reloadFiles(callback);
+        });
+      });
+    } else {
+      self.realBuildBoth(function() {
+        callback();
+      }, self.reloadFiles);
+    }
+  }, 1);
+
+  this.buildBoth = function(done) {
+    buildQueue.push({ type: 'all' }, function(err) {
+      done();
+    });
+  };
+
+  this.buildStatic = function(done) {
+    buildQueue.push({ type: 'static' }, function(err) {
+      done();
+    });
   };
 
   /**
@@ -761,15 +1021,21 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Function}   done     Callback passed either a true value to indicate its done, or an error
    * @param  {Function}   cb       Callback called after finished, passed list of files changed and done function
    */
-  this.buildBoth = function(done, cb) {
+  this.realBuildBoth = function(done, cb) {
     // clean files
     self.cachedData = null;
     self.cleanFiles(null, function() {
-      self.renderTemplates(null, function() {
-        self.copyStatic(function() {
-          self.renderPages(done, cb);
+      self.openSearchEntryStream(function() {
+        self.renderTemplates(null, function() {
+          self.copyStatic(function() {
+            self.renderPages(function() {}, function() {
+              self.closeSearchEntryStream(function() {
+                cb(done);
+              });
+            });
+          });
         });
-      });
+      })
     });
   };
 
@@ -813,7 +1079,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Boolean}   force    If true, forcibly overwrites old scaffolding
    */
   this.makeScaffolding = function(name, done, force) {
-    logger.ok('Creating Scaffolding\n');
+    logger.ok('Creating Scaffolding for ' + name + '\n');
     var directory = 'templates/' + name + '/';
 
     var list = directory + 'list.html';
@@ -836,8 +1102,18 @@ module.exports.generator = function (config, options, logger, fileParser) {
       widgetFiles[(path.dirname(item) + '/' + path.basename(item, '.html')).replace('./', '')] = true;
     });
 
-    var renderWidget = function(controlType, fieldName, controlInfo) {
-      var widgetString = _.template(fs.readFileSync('./libs/widgets/' + controlType + '.html'), { value: 'item.' + fieldName, controlInfo: controlInfo });
+    var renderWidget = function(controlType, fieldName, controlInfo, overridePrefix) {
+      var controls = [];
+
+      if(controlInfo.controls) {
+        _.each(controlInfo.controls, function(item) {
+          controls[item.name] = item;
+        });
+      }
+
+      var prefix = overridePrefix || 'item.';
+
+      var widgetString = _.template(fs.readFileSync('./libs/widgets/' + controlType + '.html'), { value: prefix + fieldName, controlInfo: controlInfo, renderWidget: renderWidget, controls: controls, widgetFiles: widgetFiles });
 
       var lines = widgetString.split('\n');
       var newLines = [];
@@ -915,7 +1191,48 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * @param  {Function}   done      Callback passed either a true value to indicate its done, or an error
    */
   this.reloadFiles = function(done) {
-    request({ url : 'http://localhost:' + liveReloadPort + '/changed?files=true', timeout: 10  }, function(error, response, body) {
+    var fileList = 'true';
+
+    if(self.staticHashs !== false && fs.existsSync('.build/static')) {
+      var newFiles = wrench.readdirSyncRecursive('.build/static');
+
+      newFiles.forEach(function(file) {
+        var file = '.build/static/' + file;
+
+
+        if(!fs.lstatSync(file).isDirectory()) {
+          var hash = md5(fs.readFileSync(file));
+
+          if(hash !== self.staticHashs[file]) {
+            self.changedStaticFiles.push(file.replace('.build', ''));
+          }
+
+          if(file in self.staticHashs) {
+            delete self.staticHashs[file];
+          }
+        }
+      })
+
+      // For any left over keys, means they got deleted
+      for(var key in self.staticHashs) {
+        self.changedStaticFiles.push(key.replace('.build', ''));
+      }
+
+      if(self.changedStaticFiles.length === 0) {
+        if(done) done(true);
+        self.staticHashs = false;
+        self.changedStaticFiles = [];
+        return;
+      }
+
+      fileList = self.changedStaticFiles.join(',');
+
+      self.staticHashs = false;
+      self.changedStaticFiles = [];
+    }
+
+
+    request({ url : 'http://localhost:' + liveReloadPort + '/changed?files=' + fileList, timeout: 10  }, function(error, response, body) {
       if(done) done(true);
     });
   };
@@ -924,7 +1241,7 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * Starts a live reload server, which will refresh the pages when signaled
    */
   this.startLiveReload = function() {
-    tinylr().listen(liveReloadPort);
+    tinylr({ liveCSS: true, liveImg: true }).listen(liveReloadPort);
   };
 
   /**
@@ -933,7 +1250,51 @@ module.exports.generator = function (config, options, logger, fileParser) {
    */
   this.sendSockMessage = function(message) {
     if(websocket) {
-      websocket.send('message:' + JSON.stringify(message));
+      websocket.sendText('message:' + JSON.stringify(message));
+    }
+  };
+
+  var runCommand = function(cmd, cwd, args, pipe, cb) {
+    if(typeof pipe == 'function') {
+      cb = pipe;
+      pipe = false;
+    }
+
+    var command = spawn(cmd, args, {
+      stdio: [process.stdin, pipe ? 'pipe' : process.stdout, process.stderr],
+      cwd: cwd
+    });
+
+    var output = '';
+
+    if(pipe) {
+      command.stdout.on('data', function(data) {
+        output += data;
+      });
+    }
+
+    command.on('close', function() {
+      cb(output);
+    })
+  }
+
+  var runNpm = function(cb) {
+    if(options.npmCache) {
+      runCommand(options.npm || 'npm', '.', ['config', 'get', 'cache'], true, function(diroutput) {
+        var oldCacheDir = diroutput.trim();
+        runCommand(options.npm || 'npm', '.', ['config', 'set', 'cache', options.npmCache], function() {
+          runCommand(options.npm || 'npm', '.', ['install'], function() {
+            runCommand(options.npm || 'npm', '.', ['config', 'set', 'cache', oldCacheDir], function() {
+              cb();
+            });
+          });
+        });
+      });
+    } else {
+      runCommand(options.npm || 'npm', '.', ['install'], function() {
+        console.log('NPM done');
+        cb();
+      }); 
     }
   };
 
@@ -942,45 +1303,44 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * Accepts messages for generating scaffolding and downloading preset themes.
    */
   this.webListener = function() {
-    var server = new ws({ host: '0.0.0.0', port: 6557 });
+    var server = new websocketServer.createServer(function(sock) {
 
-    server.on('connection', function(sock) {
       websocket = sock;
 
-      var buildQueue = async.queue(function (task, callback) {
-          self.buildBoth(function() {
-            sock.send('done');
-            callback();
-          }, self.reloadFiles);
-      }, 1);
+      sock.on('close', function() {
+        websocket = null;
+      });
 
-      sock.on('message', function(message) {
+      sock.on('error', function() {
+      })
+
+      sock.on('text', function(message) {
         if(message.indexOf('scaffolding:') === 0)
         {
           var name = message.replace('scaffolding:', '');
           self.makeScaffolding(name, function(individualMD5, listMD5, oneOffMD5) {
-            sock.send('done:' + JSON.stringify({ individualMD5: individualMD5, listMD5: listMD5, oneOffMD5: oneOffMD5 }));
+            sock.sendText('done:' + JSON.stringify({ individualMD5: individualMD5, listMD5: listMD5, oneOffMD5: oneOffMD5 }));
           });
         } else if (message.indexOf('scaffolding_force:') === 0) {
           var name = message.replace('scaffolding_force:', '');
           self.makeScaffolding(name, function(individualMD5, listMD5, oneOffMD5) {
-            sock.send('done:' + JSON.stringify({ individualMD5: individualMD5, listMD5: listMD5, oneOffMD5: oneOffMD5 }));
+            sock.sendText('done:' + JSON.stringify({ individualMD5: individualMD5, listMD5: listMD5, oneOffMD5: oneOffMD5 }));
           }, true);
         } else if (message.indexOf('check_scaffolding:') === 0) {
           var name = message.replace('check_scaffolding:', '');
           self.checkScaffoldingMD5(name, function(individualMD5, listMD5, oneOffMD5) {
-            sock.send('done:' + JSON.stringify({ individualMD5: individualMD5, listMD5: listMD5, oneOffMD5: oneOffMD5 }));
+            sock.sendText('done:' + JSON.stringify({ individualMD5: individualMD5, listMD5: listMD5, oneOffMD5: oneOffMD5 }));
           });
         } else if (message === 'reset_files') {
           resetGenerator(function(error) {
             if(error) {
-              sock.send('done:' + JSON.stringify({ err: 'Error while resetting files' }));
+              sock.sendText('done:' + JSON.stringify({ err: 'Error while resetting files' }));
             } else {
-              sock.send('done');
+              sock.sendText('done');
             }
           });
         } else if (message === 'supported_messages') {
-          sock.send('done:' + JSON.stringify([
+          sock.sendText('done:' + JSON.stringify([
             'scaffolding', 'scaffolding_force', 'check_scaffolding', 'reset_files', 'supported_messages',
             'push', 'build', 'preset', 'layouts', 'preset_localv2', 'generate_slug_v2'
           ]));
@@ -999,55 +1359,51 @@ module.exports.generator = function (config, options, logger, fileParser) {
             } 
 
             if(typeInfo && typeInfo.customUrls && typeInfo.customUrls.listUrl) {
-              tmpSlug = typeInfo.customUrls.listUrl + '/' + tmpSlug;
+
+              if(typeInfo.customUrls.listUrl === '#') {
+                tmpSlug = tmpSlug;
+              } else {
+                tmpSlug = typeInfo.customUrls.listUrl + '/' + tmpSlug;
+              }
             } else {
               tmpSlug = type + '/' + tmpSlug;
             }
               
-            sock.send('done:' + JSON.stringify(tmpSlug));
+            sock.sendText('done:' + JSON.stringify(tmpSlug));
           });
         } else if (message === 'build') {
-          buildQueue.push({}, function(err) {});
+          buildQueue.push({ type: 'all' }, function(err) { 
+            sock.sendText('done');
+          });
         } else if (message.indexOf('preset_local:') === 0) {
           var fileData = message.replace('preset_local:', '');
 
           if(!fileData) {
-            sock.send('done');
+            sock.sendText('done');
             return;
           }
 
           extractPresetLocal(fileData, function(data) {
-            var args = ['install'];
-            var command = spawn(options.npm || 'npm', args, {
-              stdio: 'inherit',
-              cwd: '.'
-            });
-
-            command.on('close', function() {
-              sock.send('done:' + JSON.stringify(data));
+            runNpm(function() {
+              sock.sendText('done:' + JSON.stringify(data));
             });
           });
         } else if (message.indexOf('preset:') === 0) {
           var url = message.replace('preset:', '');
           if(!url) {
-            sock.send('done');
+            sock.sendText('done');
             return;
           }
           downloadPreset(url, function(data) {
-            var command = spawn(options.npm || 'npm', ['install'], {
-              stdio: 'inherit',
-              cwd: '.'
-            });
-
-            command.on('close', function() {
-              sock.send('done:' + JSON.stringify(data));
+            runNpm(function() {
+              sock.sendText('done:' + JSON.stringify(data));
             });
           });
         } else {
-          sock.send('done');
+          sock.sendText('done');
         }
       });
-    });
+    }).listen(cmsSocketPort, '0.0.0.0');
   };
 
   /**
@@ -1066,8 +1422,14 @@ module.exports.generator = function (config, options, logger, fileParser) {
       confFile = fs.readFileSync('./libs/.firebase-custom.conf.jst');
     }
 
+    var noSearch = null;
+
+    if(oldConf.noSearch !== null && typeof oldConf.noSearch !== 'undefined') {
+      noSearch = oldConf.noSearch;
+    }
+
     // TODO: Grab bucket information from server eventually, for now just use the site name
-    var templated = _.template(confFile, { secretKey: secretkey, siteName: sitename, firebase: firebase, embedlyKey: oldConf.embedly || 'your-embedly-key', serverAddr: oldConf.server || 'your-server-address' });
+    var templated = _.template(confFile, { secretKey: secretkey, siteName: sitename, firebase: firebase, embedlyKey: oldConf.embedly || 'your-embedly-key', serverAddr: oldConf.server || 'your-server-address', noSearch: noSearch });
 
     fs.writeFileSync('./.firebase.conf', templated);
 
@@ -1088,76 +1450,77 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * Sets up asset generation (automatic versioning) for pushing to production
    * @param  {Object}    grunt  Grunt object from generatorTasks
    */
-  this.assets = function(grunt) {
+  this.assets = function(grunt, done) {
 
-    if(fs.existsSync('.whdist')) {
-      wrench.rmdirSyncRecursive('.whdist');
-    }
+    removeDirectory('.whdist', function() {
 
-    mkdirp.sync('.whdist');
+      mkdirp.sync('.whdist');
 
-    var files = wrench.readdirSyncRecursive('pages');
+      var files = wrench.readdirSyncRecursive('pages');
 
-    files.forEach(function(file) {
-      var originalFile = 'pages/' + file;
-      var destFile = '.whdist/pages/' + file;
+      files.forEach(function(file) {
+        var originalFile = 'pages/' + file;
+        var destFile = '.whdist/pages/' + file;
 
-      if(!fs.lstatSync(originalFile).isDirectory())
-      {
-        var content = fs.readFileSync(originalFile);
+        if(!fs.lstatSync(originalFile).isDirectory())
+        {
+          var content = fs.readFileSync(originalFile);
 
-        if(path.extname(originalFile) === '.html') {
-          content = content.toString();
-          content = content.replace('\r\n', '\n').replace('\r', '\n');
+          if(path.extname(originalFile) === '.html') {
+            content = content.toString();
+            content = content.replace('\r\n', '\n').replace('\r', '\n');
+          }
+
+          mkdirp.sync(path.dirname(destFile));
+          fs.writeFileSync(destFile, content);
         }
+      });
 
-        mkdirp.sync(path.dirname(destFile));
-        fs.writeFileSync(destFile, content);
-      }
-    });
+      files = wrench.readdirSyncRecursive('templates');
 
-    files = wrench.readdirSyncRecursive('templates');
+      files.forEach(function(file) {
+        var originalFile = 'templates/' + file;
+        var destFile = '.whdist/templates/' + file;
 
-    files.forEach(function(file) {
-      var originalFile = 'templates/' + file;
-      var destFile = '.whdist/templates/' + file;
+        if(!fs.lstatSync(originalFile).isDirectory())
+        {
+          var content = fs.readFileSync(originalFile);
 
-      if(!fs.lstatSync(originalFile).isDirectory())
-      {
-        var content = fs.readFileSync(originalFile);
+          if(path.extname(originalFile) === '.html') {
+            content = content.toString();
+            content = content.replace('\r\n', '\n').replace('\r', '\n');
+          }
 
-        if(path.extname(originalFile) === '.html') {
-          content = content.toString();
-          content = content.replace('\r\n', '\n').replace('\r', '\n');
+          mkdirp.sync(path.dirname(destFile));
+          fs.writeFileSync(destFile, content);
         }
+      });
 
-        mkdirp.sync(path.dirname(destFile));
-        fs.writeFileSync(destFile, content);
-      }
-    });
+      files = wrench.readdirSyncRecursive('static');
 
-    files = wrench.readdirSyncRecursive('static');
+      files.forEach(function(file) {
+        var originalFile = 'static/' + file;
+        var destFile = '.whdist/static/' + file;
 
-    files.forEach(function(file) {
-      var originalFile = 'static/' + file;
-      var destFile = '.whdist/static/' + file;
+        if(!fs.lstatSync(originalFile).isDirectory())
+        {
+          var content = fs.readFileSync(originalFile);
 
-      if(!fs.lstatSync(originalFile).isDirectory())
-      {
-        var content = fs.readFileSync(originalFile);
+          if(path.extname(originalFile) === '.html') {
+            content = content.toString();
+            content = content.replace('\r\n', '\n').replace('\r', '\n');
+          }
 
-        if(path.extname(originalFile) === '.html') {
-          content = content.toString();
-          content = content.replace('\r\n', '\n').replace('\r', '\n');
+          mkdirp.sync(path.dirname(destFile));
+          fs.writeFileSync(destFile, content);
         }
+      });
 
-        mkdirp.sync(path.dirname(destFile));
-        fs.writeFileSync(destFile, content);
-      }
+      grunt.task.run('useminPrepare');
+      grunt.task.run('assetsMiddle');
+
+      done();
     });
-
-    grunt.task.run('useminPrepare');
-    grunt.task.run('assetsMiddle');
 
   }
 
@@ -1194,20 +1557,20 @@ module.exports.generator = function (config, options, logger, fileParser) {
    * Finish asset versioning
    * @param  {Object}    grunt  Grunt object from generatorTasks
    */
-  this.assetsAfter = function(grunt) {
-    if(fs.existsSync('.tmp')) {
-      wrench.rmdirSyncRecursive('.tmp');
-    }
+  this.assetsAfter = function(grunt, done) {
+    removeDirectory('.tmp', function() {
+      var files = wrench.readdirSyncRecursive('static');
 
-    var files = wrench.readdirSyncRecursive('static');
+      files.forEach(function(file) {
+        var filePath = 'static/' + file;
+        var distPath = '.whdist/static/' + file;
+        if(!fs.lstatSync(filePath).isDirectory() && !fs.existsSync(distPath)) {
+          var fileData = fs.readFileSync(filePath);
+          fs.writeFileSync(distPath, fileData);
+        }
+      });
 
-    files.forEach(function(file) {
-      var filePath = 'static/' + file;
-      var distPath = '.whdist/static/' + file;
-      if(!fs.lstatSync(filePath).isDirectory() && !fs.existsSync(distPath)) {
-        var fileData = fs.readFileSync(filePath);
-        fs.writeFileSync(distPath, fileData);
-      }
+      done();
     });
   }
 
@@ -1218,6 +1581,10 @@ module.exports.generator = function (config, options, logger, fileParser) {
     strictMode = true;
   }
 
+  this.enableProduction = function() {
+    productionFlag = true;
+    swig.setDefaults({ cache: 'memory' });
+  }
 
   return this;
 };

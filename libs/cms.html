@@ -8,6 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="siteName" content="<%= siteName %>">
   <meta name="buildLive" content="true">
+  {% if cmsSocketPort %}
+  <meta name="socketPort" content="{{ cmsSocketPort }}">
+  {% endif %}
 
   <link rel="stylesheet" href="http://cms.webhook.com/{{ cmsVersion }}/assets/app.min.css">
 
@@ -23,14 +26,11 @@
       selfHosted: true
     };
   </script>
-  {% else %}
-  <script src="//dl1d2m8ri9v3j.cloudfront.net/releases/1.2.4/tracker.js" data-customer="2ec590caf8d5471a9514fd30e698cea6"></script>
   {% endif %}
 
   <script src="http://cms.webhook.com/{{ cmsVersion }}/assets/js/config.min.js"></script>
   <script src="http://cms.webhook.com/{{ cmsVersion }}/assets/vendor.min.js"></script>
   <script src="http://cms.webhook.com/{{ cmsVersion }}/assets/js/app.min.js"></script>
-  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
 
 </head>
 <body>
