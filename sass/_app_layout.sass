@@ -584,6 +584,13 @@ iframe #header.info
   .tagline
     text-align: center
 
+a.store-btn
+  margin-bottom: $base-line-height / 4
+  display: inline-block
+  img
+    float: none !important
+    margin: 0 !important
+
 .home-games li
   padding: $gutter * 2
   color: $text-invert
@@ -591,9 +598,6 @@ iframe #header.info
   background-color: $black
   min-height: 500px
   box-shadow: inset 5px 20px 20px rgba(0,0,0,.5)
-  img.poster
-    border: solid 1px rgba(255,255,255,.8)
-    box-shadow: 0px 5px 10px rgba(0,0,0,.5)
   a.text
     color: $text-invert
     p
@@ -606,14 +610,18 @@ iframe #header.info
     margin-bottom: 0
   &.transistor
     border-top: solid 5px $background-color
-    img
+    img.poster
       float: left
-      margin-right: $gutter * 2
+      margin-right: $gutter
+      border: solid 1px rgba(255,255,255,.8)
+      box-shadow: 0px 5px 10px rgba(0,0,0,.5)
   &.bastion
     border-top: solid 1px $gray-darker
-    img
+    img.poster
       float: right
-      margin-left: $gutter * 2
+      margin-left: $gutter
+      border: solid 1px rgba(255,255,255,.8)
+      box-shadow: 0px 5px 10px rgba(0,0,0,.5)
   .text
     padding-left: 300px
   hr

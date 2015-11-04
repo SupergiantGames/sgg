@@ -68,22 +68,22 @@
         <hr>
         <h3>Buy it now</h3>
         {% if item.steam %}
-          <a href="{{ item.steam }}" class="btn btn-invert fa fa-steam-square"> Steam</a>
+        <a href="{{ item.steam }}" class="store-btn"><img src="/static/images/btn_steam.png"/></a>
         {% endif %}
         {% if item.mac_app_store %}
-          <a href="{{ item.mac_app_store }}" class="btn btn-neutral fa fa-apple"> Mac</a>
+        <a href="{{ item.mac_app_store }}" class="store-btn"><img src="/static/images/btn_mac.png"/></a>
         {% endif %}
         {% if item.ios_store %}
-          <a href="{{ item.ios_store }}" class="btn btn-neutral fa fa-apple"> iOS</a>
+        <a href="{{ item.ios_store }}" class="store-btn"><img src="/static/images/btn_app.png"/></a>
         {% endif %}
         {% if item.amazon %}
-        <a href="{{ item.amazon }}" class="btn btn-amazon fa fa-shopping-cart"> Amazon</a>
+        <a href="{{ item.amazon }}" class="store-btn"> <img src="/static/images/btn_.png"/></a>
         {% endif %}
         {% if item.ps_store %}
-          <a href="{{ item.ps_store }}" class="btn btn-ps fa fa-shopping-cart"> PS4</a>
+        <a href="{{ item.ps_store }}" class="store-btn"><img src="/static/images/btn_ps.png"/></a>
         {% endif %}
         {% if item.ms_store %}
-          <a href="{{ item.ms_store }}" class="btn btn-ms fa fa-shopping-cart"> X360</a>
+        <a href="{{ item.ms_store }}" class="store-btn"><img src="/static/images/btn_xbox.png"/></a>
         {% endif %}
 
       </div>
