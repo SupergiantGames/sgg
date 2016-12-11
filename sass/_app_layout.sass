@@ -101,6 +101,7 @@ html, body
       width: 100%
 .container
   +outer-container
+  max-width: 70em
   padding-right: $gutter
   padding-left: $gutter
   .half
@@ -123,6 +124,9 @@ html, body
 
 .bastion .store
   +linear-gradient(to bottom, #8D050B 25%, darken(#8D050B, 10%) 50%)
+
+.pyre .store
+  +linear-gradient(to bottom, #276abc 25%, darken(#276abc, 10%) 50%)
 
 .store-album
   +span-columns(5)
@@ -204,6 +208,7 @@ html, body
     color: $text-light
   ul
     +outer-container
+    max-width: 70em
   li
     +span-columns(3)
     +omega(4n)
@@ -609,19 +614,22 @@ a.store-btn
   p:last-child
     margin-bottom: 0
   &.transistor
-    border-top: solid 5px $background-color
+    border-top: solid 1px $gray-darker
+    img.poster
     img.poster
       float: left
       margin-right: $gutter
       border: solid 1px rgba(255,255,255,.8)
       box-shadow: 0px 5px 10px rgba(0,0,0,.5)
-  &.bastion
+  &.bastion, &.pyre
     border-top: solid 1px $gray-darker
     img.poster
       float: right
       margin-left: $gutter
       border: solid 1px rgba(255,255,255,.8)
       box-shadow: 0px 5px 10px rgba(0,0,0,.5)
+  &.prye
+    border-top: solid 5px $background-color
   .text
     padding-left: 300px
   hr
@@ -681,6 +689,7 @@ a.store-btn
     overflow: hidden
 .home-blog
   +outer-container
+  max-width: 70em
   li
     +span-columns(4)
     +omega(3n)

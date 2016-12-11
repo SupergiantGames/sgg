@@ -66,24 +66,28 @@
           <p><a href="{{ url(item.faq) }}" class="fa fa-book"> Read the full FAQ</a></p>
         {% endif %}
         <hr>
-        <h3>Buy it now</h3>
-        {% if item.steam %}
-        <a href="{{ item.steam }}" class="store-btn"><img src="/static/images/btn_steam.png"/></a>
-        {% endif %}
-        {% if item.mac_app_store %}
-        <a href="{{ item.mac_app_store }}" class="store-btn"><img src="/static/images/btn_mac.png"/></a>
-        {% endif %}
-        {% if item.ios_store %}
-        <a href="{{ item.ios_store }}" class="store-btn"><img src="/static/images/btn_app.png"/></a>
-        {% endif %}
-        {% if item.amazon %}
-        <a href="{{ item.amazon }}" class="store-btn"> <img src="/static/images/btn_.png"/></a>
-        {% endif %}
-        {% if item.ps_store %}
-        <a href="{{ item.ps_store }}" class="store-btn"><img src="/static/images/btn_ps.png"/></a>
-        {% endif %}
-        {% if item.ms_store %}
-        <a href="{{ item.ms_store }}" class="store-btn"><img src="/static/images/btn_xbox.png"/></a>
+        {% if item.original_release_date %}
+          <h3>Buy it now</h3>
+          {% if item.steam %}
+          <a href="{{ item.steam }}" class="store-btn"><img src="/static/images/btn_steam.png"/></a>
+          {% endif %}
+          {% if item.mac_app_store %}
+          <a href="{{ item.mac_app_store }}" class="store-btn"><img src="/static/images/btn_mac.png"/></a>
+          {% endif %}
+          {% if item.ios_store %}
+          <a href="{{ item.ios_store }}" class="store-btn"><img src="/static/images/btn_app.png"/></a>
+          {% endif %}
+          {% if item.amazon %}
+          <a href="{{ item.amazon }}" class="store-btn"> <img src="/static/images/btn_.png"/></a>
+          {% endif %}
+          {% if item.ps_store %}
+          <a href="{{ item.ps_store }}" class="store-btn"><img src="/static/images/btn_ps.png"/></a>
+          {% endif %}
+          {% if item.ms_store %}
+          <a href="{{ item.ms_store }}" class="store-btn"><img src="/static/images/btn_xbox2.png"/></a>
+          {% endif %}
+        {% else %}
+          <h3>Coming soon</h3>
         {% endif %}
 
       </div>
@@ -96,12 +100,20 @@
               <a href="{{ review.url }}">
                 <span class="excerpt">{{ review.excerpt }}</span>
                 <span class="score" style="background: url({{ review.publication_logo.url }}) no-repeat center left">
-                  {{ review.publication }} - {{ review.score }} {{ review.rating_style }}
+                  {{ review.publication }}{% if review.rating_style != "None" %} - {{ review.score }} {{ review.rating_style }}{% endif %}
                 </span>
               </a>
             </div>
           {% endfor %}
           </div>
+        {% else %}
+          <h2>We just announced {{item.name}}!</h2>
+          <hr>
+          <p>Wow, you're here early! Check this space soon for some preview coverage once we have time to collect some links.</p>
+          {% if item.blog[0] %}
+            <p>In the meantime, check out out blog post where we announced the game.</p>
+            <p><strong><a href="{{ url(item.blog[0]) }}">{{ item.blog[0].name }}</a></strong></p>
+          {% endif %}
         {% endif %}
       </div>
     </div>
@@ -115,9 +127,11 @@
 
   <div class="media">
 
-    <p class="wy-text-center">
-      Want a quick to-go bag of {{ item.name }} media, wallpapers, and logos? <a href="{{ item.press_kit.url }}">Download this handy zip file.</a>
-    </p>
+    {% if item.press_kit.url %}
+      <p class="wy-text-center">
+        Want a quick to-go bag of {{ item.name }} media, wallpapers, and logos? <a href="{{ item.press_kit.url }}">Download this handy zip file.</a>
+      </p>
+    {% endif %}
 
     <ul>
       {% for video in item.video %}

@@ -91,26 +91,28 @@
             <img src="{{ game.box_art|imageSize(400) }}">
           </a>
 
-          <div style="text-align: center">
-          {% if game.steam %}
-            <a href="{{ game.steam }}" class="store-btn"><img src="/static/images/btn_steam.png"/></a>
+          {% if game.original_release_date %}
+            <div style="text-align: center">
+            {% if game.steam %}
+              <a href="{{ game.steam }}" class="store-btn"><img src="/static/images/btn_steam.png"/></a>
+            {% endif %}
+            {% if game.mac_app_store %}
+              <a href="{{ game.mac_app_store }}" class="store-btn"><img src="/static/images/btn_mac.png"/></a>
+            {% endif %}
+            {% if game.ios_store %}
+              <a href="{{ game.ios_store }}" class="store-btn"><img src="/static/images/btn_app.png"/></a>
+            {% endif %}
+            {% if game.amazon %}
+            <a href="{{ game.amazon }}" class="store-btn"> <img src="/static/images/btn_.png"/></a>
+            {% endif %}
+            {% if game.ps_store %}
+              <a href="{{ game.ps_store }}" class="store-btn"><img src="/static/images/btn_ps.png"/></a>
+            {% endif %}
+            {% if game.ms_store %}
+              <a href="{{ game.ms_store }}" class="store-btn"><img src="/static/images/btn_xbox2.png"/></a>
+            {% endif %}
+            </div>
           {% endif %}
-          {% if game.mac_app_store %}
-            <a href="{{ game.mac_app_store }}" class="store-btn"><img src="/static/images/btn_mac.png"/></a>
-          {% endif %}
-          {% if game.ios_store %}
-            <a href="{{ game.ios_store }}" class="store-btn"><img src="/static/images/btn_app.png"/></a>
-          {% endif %}
-          {% if game.amazon %}
-          <a href="{{ game.amazon }}" class="store-btn"> <img src="/static/images/btn_.png"/></a>
-          {% endif %}
-          {% if game.ps_store %}
-            <a href="{{ game.ps_store }}" class="store-btn"><img src="/static/images/btn_ps.png"/></a>
-          {% endif %}
-          {% if game.ms_store %}
-            <a href="{{ game.ms_store }}" class="store-btn"><img src="/static/images/btn_xbox.png"/></a>
-          {% endif %}
-          </div>
 
 
 

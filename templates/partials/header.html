@@ -7,7 +7,7 @@
     <div class="nav-wrap">
       <ul class="nav-left">
         <li class="social"><a href="/" class="fa fa-star first last"></a></li>
-        {% for game in games %}
+        {% for game in games|sort('original_release_date', true) %}
           {% set game_url = url(game) %}
           <li class="mobile-li"><a href="{{ url(game) }}" class="game {% if current_url == game_url %}active{% endif %}" style="color: {{ game.primary_color }}">{{ game.name }}</a></li>
         {% endfor %}
