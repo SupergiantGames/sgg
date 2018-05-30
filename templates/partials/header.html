@@ -12,6 +12,7 @@
           <li class="mobile-li"><a href="{{ url(game) }}" class="game {% if current_url == game_url %}active{% endif %}" style="color: {{ game.primary_color }}">{{ game.name }}</a></li>
         {% endfor %}
         <li class="moblie-li"><a href="/blog/" {% if current_url|startsWith('/blog/') %} class="active"{% endif %}>Blog</a></li>
+        <li class="mobile-li"><a href="/join/" {% if current_url|startsWith('/join/') %} class="active"{% endif %}>Join</a></li>
         <li class="mobile-li"><a href="/team/" {% if current_url|startsWith('/team/') %} class="active"{% endif %}>Team</a></li>
         {% if jobs %}<li><a href="/jobs/" {% if current_url|startsWith('/jobs/') %} class="active"{% endif %}>Jobs</a></li>{% endif %}
         <li class="mobile-li"><a href="/contact/" {% if current_url|startsWith('/contact/') %} class="active"{% endif %}>Contact</a></li>

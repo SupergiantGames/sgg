@@ -7,6 +7,7 @@
         <li><a href="{{ url(game) }}" {% if current_url == game_url %} class="active"{% endif %}>{{ game.name }}</a></li>
       {% endfor %}
       <li><a href="/blog/" {% if current_url|startsWith('/blog/') %} class="active"{% endif %}>Blog</a></li>
+      <li><a href="/join/" {% if current_url|startsWith('/join/') %} class="active"{% endif %}>Join</a></li>
       <li><a href="/team/" {% if current_url|startsWith('/team/') %} class="active"{% endif %}>Team</a></li>
       <li><a href="/contact/" {% if current_url|startsWith('/contact/') %} class="active"{% endif %}>Contact</a></li>
       <li><a href="http://store.supergiantgames.com">Store</a></li>
