@@ -54,7 +54,7 @@
           <li><a href="mailto:?subject={{ item.name }}&body=http://www.supergiantgames.com{{url(item)}}" class="fa fa-envelope"> Email</a></li>
           <li><a href="http://www.reddit.com/submit?url=http://www.supergiantgames.com{{url(item)}}&title={{item.name}}" class="fa fa-reddit"> Reddit</a></li>
         </ul>
-        <div class="mailing-list">
+        <!--div class="mailing-list">
           <div class="wy-control-group">
             <label>Join our mailing list</label>
             <div class="wy-control">
@@ -63,7 +63,7 @@
               </form>
             </div>
           </div>
-        </div>
+        </div-->
       </aside>
       <article>
         {{ item.body|replace('http://lh(\d).ggpht', 'https://lh$1.ggpht', 'g')|safe }}
